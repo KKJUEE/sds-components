@@ -19,7 +19,7 @@
     <div class="sds-table-filter-bottom">
       <el-button
         type="text"
-        @click="handlerReset"
+        @click="handleReset"
         :class="{'is-disabled':filteredValue.length ===0}"
         :disabled="filteredValue.length ===0"
       >{{$t('components.table_filter_reset')}}</el-button>
@@ -30,7 +30,7 @@
         :disabled="filteredValue.length ===0"
       >{{$t('components.table_filter_sure')}}</el-button>
     </div>
-    <i class="fa fa-filter" :class="{'isactive': showPopover}" slot="reference"></i>
+    <i class="fa fa-filter" :class="{'is-active': showPopover}" slot="reference"></i>
   </el-popover>
 </template>
 
@@ -49,12 +49,12 @@
       }
     },
     methods: {
-      handlerReset () {
+      handleReset () {
         this.filteredValue = []
       },
       handleConfirm () {
         this.showPopover = false;
-        this.$emit('sdsFilterConfirm', this.filteredValue, this.filterOptions);
+        this.$emit('sds-filter-confirm', this.filteredValue, this.filterOptions);
       },
     },
   }

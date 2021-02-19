@@ -46,7 +46,8 @@
     },
     methods: {
       getModalTrigger (instance) {
-        return Object.prototype.toString.call(instance) === '[object MouseEvent]' || Object.prototype.toString.call(instance) === '[object PointerEvent]'
+        return Object.prototype.toString.call(instance) === '[object MouseEvent]' ||
+          Object.prototype.toString.call(instance) === '[object PointerEvent]'
       },
       createModal (title) {
         this.modal = this.$modal.confirm({
@@ -128,7 +129,8 @@
             this.currentItem = this.activeItem[this.activeNames[0]]
             this.createModal(this.activeItem[this.activeNames[0]].title)
           } else {
-            let name = (this.activeNames[0] || this.activeNames[0] === 0) && this.activeNames[0] === item.name ? '' : item.name
+            let name = (this.activeNames[0] || this.activeNames[0] === 0) &&
+              this.activeNames[0] === item.name ? '' : item.name
             this.setActiveNames(name)
           }
         } else {

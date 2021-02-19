@@ -85,3 +85,12 @@ Vue.use(SdsComponents)
 
 4、规范化table组件对外暴露事件的函数名
 
+2021-2-19
+
+1、增加notify组件
+
+2、tag重构，当前tag分为状态类和标签类
+
+3、table优化，总览/性能切换更丝滑
+
+4、echarts封装类优化

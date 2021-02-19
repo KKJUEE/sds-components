@@ -88,10 +88,6 @@
         default: true
       },
       details: Array,
-      destroyBodyHidden: {
-        type: Boolean,
-        default: true
-      },
       // false时不渲染顶部
       header: {
         type: Boolean,
@@ -100,7 +96,11 @@
       dialogClass: String,
       dialogStyle: Object,
       bodyClass: String,
-      bodyStyle: Object
+      bodyStyle: Object,
+      appendToBody: {
+        type: Boolean,
+        default: true
+      },
     },
     provide () {
       return {
@@ -110,7 +110,9 @@
     data () {
       return {
         dataZIndex: zIndex,
-        hidden: false,
+        initShowVal: this.show,
+        isRenderBody: this.show,
+        transitionShow: !this.show,
       }
     },
     created () {
@@ -121,6 +123,11 @@
       this.$eventBus.$on("keydown.esc", this.handleEscKeydown);
       this.$eventBus.$on("mouseup", this.handleMouseup);
       this.$eventBus.$on("mousemove", this.handleMousemove);
+      this.appendToBody && document.body.appendChild(this.$el);
+      if (this.initShowVal) {
+        this.dataZIndex = zIndex++;
+        this.transitionShow = true
+      }
     },
     beforeDestroy () {
       this.$eventBus.$off("keydown.esc", this.handleEscKeydown);
@@ -128,14 +135,17 @@
       this.$eventBus.$off("mouseup", this.handleMousemove);
       this.adjustModalDebounce = null;
     },
+    destroyed () {
+      if (this.appendToBody && this.$el && this.$el.parentNode) {
+        this.$el.parentNode.removeChild(this.$el);
+      }
+    },
     watch: {
       show (val) {
         if (val) {
           this.dataZIndex = zIndex++;
-          this.hidden = false;
-          this.$emit("sds-modal-show");
-        } else {
-          this.$emit("sds-modal-hide");
+          this.isRenderBody = true;
+          this.initShowVal && (this.transitionShow = true);
         }
       },
     },
@@ -232,6 +242,10 @@
         }
       },
       hide () {
+        if (this.initShowVal) {
+          this.transitionShow = false;
+          return;
+        }
         this.$emit('update:show', false);
       },
       enter (el) {
@@ -246,12 +260,15 @@
       // 离开transition css已过渡完成
       afterLeave (el) {
         showedZIndexs.splice(showedZIndexs.indexOf(this.computedZIndex), 1);
+        if (this.initShowVal) {
+          this.$emit('update:show', false);
+        }
         this.$emit("sds-modal-hidden");
         this.afterLeaveClear();
       },
       afterLeaveClear () {
         zIndex--;
-        this.hidden = true;
+        this.isRenderBody = false;
       },
       renderHeader () {
         const h = this.$createElement;
@@ -284,7 +301,7 @@
       },
       renderBody () {
         const h = this.$createElement;
-        if (this.destroyBodyHidden && this.hidden) {
+        if (!this.isRenderBody) {
           return null;
         }
         return h(
@@ -369,8 +386,8 @@
         const offsetLeft = modalEl.offsetLeft;
         const disClientY = moveClientY - this.startClientY;
         const disClientX = moveClientX - this.startClientX;
-        const topVal = offsetTop + (disClientY);
-        const leftVal = offsetLeft + (disClientX);
+        const topVal = offsetTop + disClientY;
+        const leftVal = offsetLeft + disClientX;
         modalEl.style.top = topVal + "px";
         modalEl.style.left = leftVal + "px";
         this.startClientY = moveClientY;
@@ -405,7 +422,7 @@
               directives: [
                 {
                   name: 'show',
-                  value: this.show,
+                  value: this.show && this.transitionShow,
                 }
               ],
             },

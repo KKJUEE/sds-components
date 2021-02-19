@@ -21,7 +21,14 @@ export default {
     const { props } = context
     props.params.columnOption = props.column
     if (props.column.filter && props.type) {
-      return h('span', { class: 'sds-table-column-filter sds-thead-tools' }, [props.render(h, props.params, props.vm, props.vm.$parent || {}), context.scopedSlots.default()])
+      return h(
+        'span',
+        { class: 'sds-table-column-filter sds-thead-tools' },
+        [
+          props.render(h, props.params, props.vm, props.vm.$parent || {}),
+          context.scopedSlots.default()
+        ]
+      )
     } else {
       return props.render(h, props.params, props.vm, props.vm.$parent || {})
     }

@@ -1,0 +1,42 @@
+@import "../themes/index";
+$image-path: "~@/assets/images";
+$tag-color-map: (
+  blue:(color: $sds-tag-blue-color, bg: $sds-tag-blue-bg-color),
+  red: (color: $sds-tag-red-color, bg: $sds-tag-red-bg-color),
+  yellow: (color: $sds-tag-yellow-color, bg: $sds-tag-yellow-bg-color),
+  orange: (color: $sds-tag-orange-color, bg: $sds-tag-orange-bg-color),
+  green: (color: $sds-tag-green-color, bg: $sds-tag-green-bg-color),
+  gray: (color: $sds-tag-gray-color),
+  purple: (color: $sds-tag-purple-color),
+  pink: (color: $sds-tag-pink-color),
+);
+$status-tag-color-map: (
+  normal: map-get($tag-color-map, green),
+  abnormal: map-get($tag-color-map, red),
+  warning: map-get($tag-color-map, yellow),
+  health: map-get($tag-color-map, green),
+  sub_health:  map-get($tag-color-map, orange),
+  degrade:  map-get($tag-color-map, orange),
+  unknown: map-get($tag-color-map, gray),
+  offline: map-get($tag-color-map, gray),
+  success: map-get($tag-color-map, green),
+  failure: map-get($tag-color-map, red),
+  connected: map-get($tag-color-map, blue),
+  restoring: map-get($tag-color-map, blue),
+  waitting: map-get($tag-color-map, purple),
+  maintaining: map-get($tag-color-map, pink),
+);
+$entity-tag-color-map: (
+  third: (color: $blue-14, dot: false),
+  osd: (color: $blue-3, dot: false, alpha: 0.6),
+  mon: (color: $blue-6, dot: false, alpha: 0.6),
+  om: (color: $green-1, dot: false, alpha: 0.6),
+  tgt: (color: $blue-9, dot: false, alpha: 0.6),
+  nas: (color: $purple-1, dot: false, alpha: 0.6),
+  permission: (color: $black-5, dot: false, bg: rgba($blue-3, 0.1), border-color: rgba($blue-3, 0.4)),
+);
+$device-view: "~@/assets/images/hardware/device_view.jpg";
+$network-normal: "~@/assets/images/hardware/network_normal.png";
+$network-sub-health: "~@/assets/images/hardware/network_sub_health.png";
+$network-error: "~@/assets/images/hardware/network_error.png";
+$network-unknown: "~@/assets/images/hardware/network_unknown.png";

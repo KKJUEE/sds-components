@@ -1,0 +1,33 @@
+@import "../themes/index";
+@mixin make-tag-theme ($tag-color-map) {
+  @each $key, $val in $tag-color-map {
+    $color: map-get($val, color);
+    $bg: map-get($val, bg);
+    $dot: map-get($val, dot);
+    $border-alpha: map-get($val, alpha);
+    $border-color: map-get($val, border-color);
+    @if ($border-color == null) {
+      $border-color: rgba($color, 0.4);
+    }
+    @if ($border-alpha != null) {
+      $border-color: rgba($color, $border-alpha);
+    }
+    @if ($dot != false) {
+      .sds-dot-tag-#{$key} {
+        color: $color;
+        &::before {
+          background-color: $color;
+        }
+      }
+    }
+    .el-tag.el-tag--#{$key} {
+      color: $color;
+      border: 1px solid $border-color;
+      @if ($bg != null) {
+        background-color: $bg;
+      } @else {
+        background-color: transparent;
+      }
+    }
+  }
+}

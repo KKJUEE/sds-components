@@ -17,6 +17,7 @@ import Result from "./result";
 import Tag from "./tag";
 import SdsSelect from "./select";
 import SdsCollapse from "./collapse";
+import "./notification/SdsNotification";
 import SdsActionBar from "./topActionBar";
 import SdsPagination from "./pagination";
 import "./assets/index.js"

@@ -49,11 +49,12 @@ function isEqual (target, src) {
   if (targetType !== srcType) {
     return false;
   }
-  if (targetType !== "object" || src !== "object") {
-    return targetType === srcType;
+  if (targetType !== "object" ||
+    src === null || target === null) {
+    return target === src;
   }
-  const srcKeys = Object.keys(src || {});
-  const targetKeys = Object.keys(target || {});
+  const srcKeys = Object.keys(src);
+  const targetKeys = Object.keys(target);
   if (srcKeys.length !== targetKeys.length) {
     return false;
   }
@@ -207,18 +208,85 @@ function sort (obj1, obj2, key) {
 *  @ return { Object }
 * */
 function deepClone (source) {
-  if (!source && typeof source !== 'object') {
-    throw new Error('error arguments', 'deepClone')
+  if (!source || typeof source !== 'object') {
+    return source;
   }
-  const targetObj = source.constructor === Array ? [] : {}
+  const targetObj = Array.isArray(source) ? [] : {}
   Object.keys(source).forEach(keys => {
     if (source[keys] && typeof source[keys] === 'object') {
       targetObj[keys] = deepClone(source[keys])
     } else {
       targetObj[keys] = source[keys]
     }
-  })
+  });
   return targetObj
+}
+
+function transformCapacity (capacity, unit = "B") {
+  const units = ["B", "KB", "MB", "GB", "TB", "PB"];
+  if (isUnDefined(capacity)) {
+    return 0 + unit;
+  }
+  capacity = capacity / 1024;
+  if (capacity >= 1024) {
+    return transformCapacity(capacity, units[units.indexOf(unit) + 1]);
+  }
+  return Number(capacity).toFixed(2) + unit;
+}
+
+function formatBondwith (value) {
+  return transformCapacity(value, "B") + "/s";
+}
+
+function formatUnitValue (value, formatter) {
+  formatter = formatter || "{value}";
+  const formatterType = typeof formatter;
+  if (formatterType === "function") {
+    value = formatter(value);
+  } else if (formatterType === "string") {
+    value = formatter.replace(/(\{value\})((?!%).*)$/, function (m, p1, p2) {
+      return p2 ? value + p2 : value;
+    });
+  }
+  if (isNaN(value)) {
+    value = value.replace(/([0-9]+\.?[0-9]*)((?!%).+)$/, function (m, p1, p2) {
+      return p1 + " " + p2;
+    });
+  }
+  return value;
+}
+
+function transformNumber (num) {
+  if (isUnDefined(num)) {
+    return 0;
+  }
+  if (num < 1000) {
+    return num;
+  }
+  // 保留一位小数且不四舍五入
+  return (parseInt((num / 1000) * 10) / 10).toFixed(1) + "K";
+}
+
+function handleRespData (resp, Ctr, ...arg) {
+  let respData = resp.data;
+  let data = respData;
+  const isPaging = !!respData.pagination;
+  isPaging && (data = respData.data);
+  data = data.map(oData => {
+    return new Ctr(oData, arg);
+  });
+  if (isPaging) {
+    return { pagination: respData.pagination, data };
+  }
+  return data;
+}
+
+function toDate (date) {
+  if (!date) {
+    return date;
+  }
+  isIE() && (date = date.replace(/-/g, "/"));
+  return new Date(date);
 }
 
 function formatCapacityToUnitObj (value, decimal) {
@@ -282,5 +350,11 @@ export {
   handleRequestError,
   sort,
   deepClone,
+  transformCapacity,
+  transformNumber,
+  handleRespData,
+  formatBondwith,
+  formatUnitValue,
+  toDate,
   formatCapacityToUnitObj
 }

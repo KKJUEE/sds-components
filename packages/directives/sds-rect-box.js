@@ -1,4 +1,4 @@
-import { on, off } from 'element-ui/src/utils/dom';
+import { on, off } from 'element-ui/lib/utils/dom';
 
 const updateStyle = (target, { top, left, width, height }) => {
   target.style.top = top;

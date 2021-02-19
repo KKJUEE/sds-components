@@ -1,9 +1,9 @@
 import Vue from "vue";
 import i18n from "../locale"
-import ModalOptions, { TYPES } from "./SdsModal";
+import SdsModal, { TYPES } from "./SdsModal";
 import { isVNode, noop } from "../utils/utils";
-
-const ModalConstructor = Vue.extend(ModalOptions);
+import modalMixin from "@/mixins/modal-mixin";
+const ModalConstructor = Vue.extend(SdsModal);
 
 const DEFAULT_OPTIONS = {
   title: "",
@@ -16,22 +16,23 @@ const DEFAULT_OPTIONS = {
   okLoading: false,
   okClose: true,
   keyboard: true,
-  okBtnName: i18n.t("components.modal_sure"),
-  cancelBtnName: i18n.t("components.modal_cancel"),
   okBtnProps: {},
   cancelBtnProps: {},
   draggable: true,
   autoAdjust: true,
   onOk: noop,
   onCancel: noop,
-  onShow: noop,
   onShown: noop,
-  onHide: noop,
   onHidden: noop,
 };
 
-const Modal = function (options = {}) {
-  options = Object.assign({}, DEFAULT_OPTIONS, options);
+function Modal (externalModal, options = {}) {
+  let Constructor = ModalConstructor;
+  if (externalModal) {
+    Constructor = Vue.extend(externalModal);
+  } else {
+    options = Object.assign({}, DEFAULT_OPTIONS, options);
+  }
   if (isVNode(options.infoMsg)) {
     options._vnodeInfoMsg = [options.infoMsg];
     options.infoMsg = null;
@@ -44,9 +45,14 @@ const Modal = function (options = {}) {
     options._vnodeFooter = [options.footer];
     options.footer = !!options.footer;
   }
-  let instance = new ModalConstructor({
+  const listeners = options.on;
+  delete options.on;
+  let instance = new Constructor({
     i18n,
+    store: Modal.store,
     propsData: options,
+    _parentListeners: listeners,
+    mixins: externalModal ? [modalMixin] : null,
     methods: {
       update (newOptions = {}) {
         let keys, len, i, key;
@@ -59,14 +65,18 @@ const Modal = function (options = {}) {
       }
     }
   });
+  if (externalModal) {
+    instance.$mount();
+    instance.showModal();
+    return instance;
+  }
   instance.$slots.infoMsg = options._vnodeInfoMsg;
   instance.$slots.title = options._vnodeTitle;
   instance.$slots.footer = options._vnodeFooter;
   let content = options.content;
   if (typeof content === "function") {
     content = content(instance.$createElement, instance);
-  }
-  if (content && !isVNode(content)) {
+  } else if (content && !isVNode(content)) {
     content = instance._v(content);
   }
   content && (instance.$slots.default = [content]);
@@ -92,9 +102,7 @@ const Modal = function (options = {}) {
   instance.$on("update:show", (val) => {
     instance.show = val;
   });
-  instance.$on("sds-modal-show", options.onShow);
   instance.$on("sds-modal-shown", options.onShown);
-  instance.$on("sds-modal-hide", options.onHide);
   instance.$on("sds-modal-hidden", () => {
     options.onHidden();
     instance.$el.parentNode.removeChild(instance.$el);
@@ -102,10 +110,12 @@ const Modal = function (options = {}) {
     instance = null;
   });
   instance.$mount();
-  document.body.appendChild(instance.$el);
+  // mount时已append to body,不需要重复append
+  !instance.appendToBody && document.body.appendChild(instance.$el);
   instance.show = true;
   return instance;
-};
+}
+
 Object.assign(Modal, {
   info (options = {}) {
     options = {
@@ -114,7 +124,7 @@ Object.assign(Modal, {
       ...options,
       type: TYPES.INFO
     };
-    return Modal.call(this, options);
+    return Modal.call(this, null, options);
   },
   yes (options = {}) {
     options = {
@@ -124,7 +134,7 @@ Object.assign(Modal, {
       ...options,
       type: TYPES.YES
     };
-    return Modal.call(this, options);
+    return Modal.call(this, null, options);
   },
   confirm (options = {}) {
     options = {
@@ -134,7 +144,10 @@ Object.assign(Modal, {
       ...options,
       type: TYPES.CONFIRM
     };
-    return Modal.call(this, options);
+    return Modal.call(this, null, options);
+  },
+  registerStore (store) {
+    this.store = store;
   },
 });
 export default Modal;

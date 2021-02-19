@@ -1,58 +1,59 @@
-.sds-pagination {
-  @include flex(space-between);
+.sds-pagination.el-pagination {
   margin: 16px 0;
-  .sds-pagination__hidden {
-    visibility: hidden;
-  }
-  .el-pagination {
-    width: 100%;
-    .btn-prev,
-    .btn-next,
-    .el-pager > li {
-      height: 32px;
-      width: 32px;
-      margin: 0 8px;
-      line-height: 32px;
-      border-radius: 4px;
-      color: $sds-pagination-btn-text-color;
-      border-color: $sds-pagination-btn-border-color;
+  width: 100%;
+  .btn-prev,
+  .btn-next,
+  .el-pager > li {
+    min-width: $sds-pagination-btn-width;
+    margin: 0 0 0 8px;
+    border-radius: 4px;
+    color: $sds-pagination-btn-text-color;
+    border: 1px solid $sds-pagination-btn-border-color;
+    background-color: $sds-pagination-btn-bg-color;
+    .el-icon {
+      font-size: 18px;
+    }
+    &:disabled {
+      border: 1px solid $sds-pagination-btn-border-color;
+      background-color: $sds-pagination-btn-bg-color;
       .el-icon {
-        font-size: 18px;
-      }
-      &:disabled {
-        border: 1px solid $sds-pagination-btn-border-color;
-        background-color: $sds-pagination-btn-bg-color;
-        .el-icon {
-          color: $sds-pagination-disabled-color;
-        }
+        color: $sds-pagination-disabled-color;
       }
     }
-    .el-pager > li {
-      &:hover {
-        border-color: $sds-pagination-btn-hover-border-color;
-      }
-      &:not(.active) {
-        &:hover {
-          color: $sds-pagination-btn-hover-text-color;
-        }
-      }
+  }
+  .el-pager > li {
+    &:not(.disabled):hover {
+      color: $sds-white-color;
+      border-color: $sds-pagination-btn-hover-bg-color;
+      background-color: $sds-pagination-btn-hover-bg-color;
     }
-    .el-pagination__jump,.el-pagination__sizes,.el-pager,.btn-next,.btn-prev{
-      float: right;
+    &.active {
+      border: none;
+      color: $sds-white-color;
+      background-color: $sds-pagination-btn-active-bg-color;
     }
-    .el-pagination__sizes {
-      margin: 0 3px;
-      .el-select {
-        .el-input__inner {
-          height: 32px;
-        }
-      }
+  }
+  .el-pagination__jump,.el-pagination__sizes,.el-pager,.btn-next,.btn-prev{
+    float: right;
+  }
+  .el-pagination__sizes, .el-pagination__jump {
+    margin: 0 0 0 16px;
+  }
+  .el-pagination__total {
+    margin-right: 0;
+  }
+  .el-pagination__editor {
+    padding: 0;
+    margin: 0 8px;
+  }
+  .el-select {
+    .el-input {
+      margin: 0;
     }
-    .el-pagination__total {
-      margin-right: 0;
-      &.sds-pagination__total{
-        white-space: pre;
-      }
+    .el-input__inner {
+      height: $sds-pagination-btn-height;
+      line-height: $sds-pagination-btn-height;
     }
   }
 }
+

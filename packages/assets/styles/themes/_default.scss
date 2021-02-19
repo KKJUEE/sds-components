@@ -100,7 +100,7 @@ $sds-dropdown-item-hover-color: $sds-primary-color;
 // button
 $sds-button-info-bg-color: $white-2;
 $sds-button-info-hover-bg-color: $gray-7;
-$sds-button-assit-more-color: $blue-12;
+$sds-button-assit-more-color: $blue-16;
 $sds-button-assit-more-info-hover-color:$blue-2;
 $sds-button-padding-vertical: 9px;
 $sds-button-padding-horizontal: 16px;
@@ -137,31 +137,25 @@ $sds-detail-collapse-bg-color: $white-4;
 $sds-detail-collapse-border-color: $gray-8;
 
 //tag
-//font&border-color
-$sds-tag-info-background-color: $gray-8;
-$sds-tag-normal-text-color: $green-2;
-$sds-tag-error-text-color: $red-2;
-$sds-tag-warning-text-color: $sds-alarm-warning-color;
-$sds-tag-sub-health-text-color: $sds-alarm-important-color;
-$sds-tag-unknown-text-color: $gray-9;
-$sds-tag-primary-text-color: $sds-primary-color;
-$sds-tag-waiting-text-color: $purple-3;
-$sds-tag-maintained-text-color: $red-7;
-$sds-tag-third-part-text-color: $blue-14;
-$sds-tag-monitor-text-color: $blue-6;
-$sds-tag-manager-text-color: $green-1;
-$sds-tag-tgt-text-color: $blue-9;
-$sds-tag-nas-text-color: $purple-1;
-$sds-tag-object-text-color: $sds-secondary-text-color;
-$sds-tag-font-size: 14px !default;
-
-//background
-$sds-tag-normal-background-color: $green-6;
-$sds-tag-error-background-color: $red-8;
-$sds-tag-warning-background-color: $yellow-7;
-$sds-tag-sub-health-background-color: $yellow-6;
-$sds-tag-primary-background-color: $blue-15;
-$sds-tag-object-background-color: $sds-primary-color;
+$sds-tag-blue-color: $sds-primary-color;
+$sds-tag-blue-bg-color: $blue-15;
+$sds-tag-red-color: $red-2;
+$sds-tag-yellow-color: $yellow-2;
+$sds-tag-orange-color: $yellow-1;
+$sds-tag-gray-color: $gray-9;
+$sds-tag-gray-bg-color: $white-2;
+$sds-tag-purple-color: $purple-3;
+$sds-tag-green-color: $green-2;
+$sds-tag-pink-color: $red-7;
+$sds-tag-blue-bg-color: $blue-15;
+$sds-tag-yellow-bg-color: $yellow-7;
+$sds-tag-orange-bg-color: $yellow-8;
+$sds-tag-red-bg-color: $red-8;
+$sds-tag-green-bg-color: $green-6;
+$sds-tag-dot-size: 8px;
+$sds-tag-padding: 0 4px;
+$sds-tag-font-size: $sds-font-size-small;
+$sds-tag-dot-font-size: $sds-font-size-base;
 
 //dropdown
 $sds-dropdown-cache: $red-9;
@@ -227,8 +221,8 @@ $sds-table-row-negative-status-en: deleting, reducing, downing;
 $sds-table-row-primary-status-en: copying, editing;
 $sds-table-row-negative-status-zh: 正在删除, 正在减容, 正在降级;
 $sds-table-row-primary-status-zh: 正在复制, 正在编辑;
-$sds-table-thead-height: 40px;
-$sds-table-tr-height: 40px;
+$sds-table-thead-height: 48px;
+$sds-table-tr-height: 48px;
 $sds-table-thead-bg-color: $white-4;
 $sds-table-tbody-bg-color: $white-1;
 $sds-table-tbody-tr-hover-bg-color: $white-4;
@@ -239,7 +233,7 @@ $sds-table-column-popover-border-color: $gray-1;
 $sds-table-column-popover-disabled-color: $gray-2;
 $sds-table-column-popover-bg-color: $white-1;
 
-$sds-table-border-bottom-color: $gray-6;
+$sds-table-border-color: $gray-6;
 $sds-table-icon-color: $black-7;
 $sds-table-icon-primary-text-color: $white-1;
 $sds-table-hight-light-color: $blue-8;
@@ -261,9 +255,11 @@ $sds-table-scrollbar-track-color: $white-1;
 $sds-pagination-btn-text-color: $black-1;
 $sds-pagination-btn-bg-color: $white-1;
 $sds-pagination-btn-border-color: $gray-1;
-$sds-pagination-btn-hover-border-color: $white-1;
-$sds-pagination-btn-hover-text-color:$sds-primary-color;
+$sds-pagination-btn-hover-bg-color:$sds-primary-color;
+$sds-pagination-btn-active-bg-color:$sds-primary-color;
 $sds-pagination-disabled-color: $gray-2;
+$sds-pagination-btn-height: 32px;
+$sds-pagination-btn-width: 32px;
 
 // tab
 $sds-top-tab-item-font-size: 16px;

@@ -2,9 +2,11 @@
   import { addResizeListener, removeResizeListener } from "element-ui/lib/utils/resize-event";
   import { isEmpty } from "../utils/utils";
   import SdsLineLegend from "./SdsLineLegend";
+  import emitter from "element-ui/lib/mixins/emitter";
 
   export default {
     name: 'sds-echarts',
+    mixins: [emitter],
     props: {
       options: Object,
       height: String,
@@ -73,6 +75,7 @@
       },
       handleResize () {
         this.chart && this.chart.resize();
+        this.broadcast("sds-line-legend", "echarts-resize");
       },
       handleSwitchChange (serieName, switchVal) {
         this.switchMap[serieName] = switchVal;

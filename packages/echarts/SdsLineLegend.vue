@@ -9,14 +9,14 @@
         {{getGridXAxisLastestData(index)}}
       </span>
       <span v-for="serie in getGridSeries(index)" class="sds-line-legend-item-switch"
-        :key="serie.name">
+        :key="serie.alias || serie.name">
         <el-switch v-model="switchMap[serie.name].switchVal"
           :active-color="getSerieColor(serie)"
-          :active-text="serie.name">
+          :active-text="serie.alias || serie.name">
         </el-switch>
         <span class="sds-line-legend-item-switch-lastest-value"
           :class="[{'is-disabled': !switchMap[serie.name].switchVal}]">
-          {{serie.data[serie.data.length - 1]}}
+          {{getGridYAxisLastestData(serie, index)}}
         </span>
       </span>
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-  import { isUnDefined } from "../utils/utils";
+  import { isUnDefined, formatUnitValue } from "../utils/utils";
   function transformArray (src) {
     if (Array.isArray(src)) {
       return src;
@@ -42,13 +42,9 @@
   }
   export default {
     name: "sds-line-legend",
+    componentName: "sds-line-legend",
     props: {
-      options: {
-        type: Object,
-        default () {
-          return {};
-        }
-      },
+      options: Object,
       showTitle: {
         type: Boolean,
         default: true
@@ -56,7 +52,8 @@
       showSubtitle: {
         type: Boolean,
         default: true
-      }
+      },
+      offset: Number
     },
     inject: {
       position: {
@@ -72,29 +69,35 @@
     },
     created () {
       this.colorLoopCount = 0;
+      this.$on("echarts-resize", this.initTtemStyles);
     },
     mounted () {
       this.initTtemStyles();
     },
     computed: {
       grids () {
-        let grid = this.options.grid;
+        const options = this.options || {};
+        let grid = options.grid;
         return transformArray(grid);
       },
       titles () {
-        let title = this.options.title;
+        const options = this.options || {};
+        let title = options.title;
         return transformArray(title);
       },
       xAxis () {
-        let xAxis = this.options.xAxis;
+        const options = this.options || {};
+        let xAxis = options.xAxis;
         return transformArray(xAxis);
       },
       yAxis () {
-        let yAxis = this.options.yAxis;
+        const options = this.options || {};
+        let yAxis = options.yAxis;
         return transformArray(yAxis);
       },
       filterSeries () {
-        const series = this.options.series || [];
+        const options = this.options || {};
+        const series = options.series || [];
         return series.filter(serie => {
           return serie.name;
         });
@@ -102,9 +105,11 @@
     },
     methods: {
       initTtemStyles () {
-        const height = this.$el.offsetHeight || this.$parent.$el.offsetHeight;
+        const chartElm = this.$parent.$refs.chart;
+        let height = this.$el.offsetHeight || (chartElm.offsetHeight);
         const gridLen = this.grids.length;
         let verticalStyle;
+        this.itemStyles = [];
         for (let i = 0; i < gridLen; i++) {
           let grid = this.grids[i];
           verticalStyle = this.getVerticalStyle(grid, height);
@@ -119,13 +124,14 @@
         });
         for (let i = 0; i < gridSeries.length; i++) {
           let serie = gridSeries[i];
-          if (this.switchMap.hasOwnProperty(serie.name)) {
+          let mark = serie.name;
+          if (this.switchMap.hasOwnProperty(mark)) {
             continue;
           }
-          this.$set(this.switchMap, serie.name, { switchVal: true });
+          this.$set(this.switchMap, mark, { switchVal: true });
           this.$watch(
             () => {
-              return this.switchMap[serie.name].switchVal;
+              return this.switchMap[mark].switchVal;
             },
             (val) => {
               this.$emit("switch-change", serie.name, val);
@@ -134,19 +140,46 @@
         }
         return gridSeries;
       },
-      getGridXAxis (index) {
-        let xAxis = this.xAxis;
-        return xAxis.filter(item => {
+      getGridAxis (direction, index) {
+        let axis = direction === "y" ? this.yAxis : this.xAxis;
+        return axis.filter(item => {
           return item.gridIndex === index || (index === 0 && !item.hasOwnProperty("gridIndex"));
         })[0];
       },
       getGridXAxisLastestData (index) {
-        let gridXAxis = this.getGridXAxis(index);
+        let gridXAxis = this.getGridAxis("x", index);
         if (!gridXAxis) {
           return;
         }
+        const dataset = this.options.dataset;
+        const source = dataset ? dataset.source : [];
         const data = gridXAxis.data || [];
-        return data[data.length - 1];
+        const axisLabel = gridXAxis.axisLabel || {};
+        const formatter = axisLabel.formatter;
+        const format = axisLabel.lastest_format;
+        let lastestValue = data[data.length - 1] || source[source.length - 1][0];
+        // [[x,y],[x1,y1]]
+        Array.isArray(lastestValue) && (lastestValue = lastestValue[0]);
+        if (typeof formatter === "function") {
+          lastestValue = formatter(lastestValue, source.length, format || "yyyy-MM-dd HH:mm");
+        }
+        return lastestValue;
+      },
+      getGridYAxisLastestData (serie, gridIndex) {
+        let gridYAxis = this.getGridAxis("y", gridIndex);
+        if (!gridYAxis) {
+          return;
+        }
+        const serieIndex = this.options.series.indexOf(serie);
+        const dataset = this.options.dataset;
+        const source = dataset ? dataset.source : [];
+        const data = serie.data || [];
+        const axisLabel = gridYAxis.axisLabel || {};
+        const formatter = axisLabel.formatter;
+        let lastestValue = data[data.length - 1] || source[source.length - 1][serieIndex + 1];
+        // [[x,y],[x1,y1]]
+        Array.isArray(lastestValue) && (lastestValue = lastestValue[1]);
+        return formatUnitValue(lastestValue, formatter);
       },
       getSerieColor (serie) {
         let color;
@@ -182,7 +215,8 @@
         let isBottom = this.position === "bottom";
         // 26为legend-item水平排布时的高度
         const lengendItemHeight = 26;
-        let diff = 8;
+        let diff = grid.containLabel || !(isTop || isBottom) ? 12 : 24;
+        diff = this.offset || diff;
         if (isTop) {
           diff = lengendItemHeight + 8;
         } else if (isBottom) {

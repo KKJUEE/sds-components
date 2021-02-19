@@ -1,14 +1,27 @@
 <template>
   <div class="sds-cell-tools">
-    <el-button type="text" @click="handleCellAction(op)" :class="op.className" v-for="(op, idx) in baseList" :key="op.handle">{{op.name}}<span class="sds-cell-tools--line" v-if="idx < baseList.length-1">|</span></el-button>
-    <el-dropdown trigger="click"  v-if="moreList.length">
-      <el-button type="text" class="sds-dropdown-link">{{$t('components.table_celltools_more')}}<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-      <el-dropdown-menu slot="dropdown" class="operation-dropdown">
-        <el-dropdown-item v-for="op in moreList" :key="op.handle">
-          <el-button type="text" @click="handleCellAction(op)" >{{op.name}}</el-button>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
+    <slot>
+      <el-button type="text" v-for="(op, idx) in baseList"
+         @click="handleCellAction(op)"
+         :class="op.className"
+         :key="op.name">
+        {{op.name}}
+        <span class="sds-cell-tools--line" v-if="idx < baseList.length-1">|</span>
+      </el-button>
+      <el-dropdown trigger="click"  v-if="moreList.length">
+        <el-button type="text" class="sds-dropdown-link">
+          {{$t('components.table_celltools_more')}}
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown" class="operation-dropdown">
+          <el-dropdown-item v-for="op in moreList" :key="op.handle">
+            <el-button type="text" @click="handleCellAction(op)" >
+              {{op.name}}
+            </el-button>
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </slot>
   </div>
 </template>
 
@@ -26,7 +39,7 @@
     },
     computed: {
       currentTools () {
-        return this.cellActionTools ? this.cellActionTools : [
+        return this.cellActionTools || [
           {
             name: this.$t('components.table_celltools_cancel'),
             handle: 'cancel',
@@ -52,7 +65,7 @@
     },
     methods: {
       handleCellAction (op) {
-        this.$emit('handleCellAction', this.currentRow, op)
+        this.$emit('cell-action-click', this.currentRow, op)
       }
     }
   }

@@ -1,12 +1,22 @@
 <template>
-  <el-dropdown trigger="click" class="sds-dot-tools" size="medium" placement="bottom-start" @command="handleAction" @visible-change="handleVisibleChange">
-    <el-button type="text" :class="{'sds-dot-tools--text':true, isactive:dotToolShow}" icon="fa fa-ellipsis-h"></el-button>
+  <el-dropdown trigger="click" class="sds-dot-tools" size="medium"
+    placement="bottom-start"
+    @command="handleAction"
+    @visible-change="handleVisibleChange">
+    <el-button type="text"
+       class="sds-dot-tools--text"
+       :class="{'is-active': visible}"
+       icon="fa fa-ellipsis-h">
+    </el-button>
     <el-dropdown-menu slot="dropdown"  class="sds-dot-tools-menu">
-      <el-dropdown-item
-        v-for="item in dotActionTools"
-        :key="item.value"
-        :command="item.value"
-      >{{item.label}}</el-dropdown-item>
+      <slot>
+        <el-dropdown-item
+          v-for="item in dotActionTools"
+          :key="item.value"
+          :command="item.value">
+          {{item.label}}
+        </el-dropdown-item>
+      </slot>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -15,28 +25,26 @@
   export default {
     inheritAttrs: false,
     props: {
-      dotActionTools: {
-        type: Array,
-        required: true
-      },
+      dotActionTools: Array,
       currentRow: {
         type: Object,
         required: true
       },
-      dotToolShow: {
-        type: Boolean,
+      index: String
+    },
+    data () {
+      return {
+        visible: false
       }
     },
     methods: {
       handleAction (command) {
         this.$emit('sds-dot-command', command, this.currentRow);
       },
-      handleVisibleChange (bool) {
-        this.$emit('updateDotToolShow', bool)
+      handleVisibleChange (visible) {
+        this.visible = visible;
+        this.$emit('dot-tool-visible-change', visible, this.index)
       }
     },
   }
 </script>
-
-<style scoped>
-</style>

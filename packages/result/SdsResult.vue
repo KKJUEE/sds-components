@@ -18,7 +18,7 @@
 
 <script>
   export default {
-    name: "sdsResult",
+    name: "sds-result",
     data () {
       return {}
     },

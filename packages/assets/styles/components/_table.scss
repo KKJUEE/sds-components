@@ -9,11 +9,10 @@
   thead > tr > th,
   thead > tr > th > .cell {
     width: 100%;
-    min-height: $sds-table-thead-height;
+    height: $sds-table-thead-height;
     padding: 0 5px;
     color: $sds-table-text-color;
     background: $sds-table-thead-bg-color;
-    border-bottom-color: $sds-table-border-bottom-color;
     font-size: 14px;
     font-weight: bold;
   }
@@ -24,7 +23,7 @@
   }
   thead > tr > th > .cell {
     width: 100%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
   }
   .el-table__body-wrapper{
@@ -190,7 +189,7 @@
     &:hover{
       color: $sds-table-dot-tool-hover-text-color;
     }
-    &.isactive{
+    &.is-active{
       color: $sds-table-dot-tool-hover-text-color;
     }
   }
@@ -202,12 +201,12 @@
       padding-right: 8px;
       font-size: 12px;
       color: $sds-table-icon-color;
-
+      cursor: pointer;
       &:hover {
         color: $sds-primary-color;
       }
 
-      &.isactive {
+      &.is-active {
         color: $sds-primary-color;
       }
     }
@@ -267,23 +266,15 @@
     display: none;
   }
   .sds-table-filter__content {
-    height: 160px;
-    padding: 0px 0px 0px 10px;
+    min-height: 40px;
   }
-
   .sds-scrollbar {
-    height: 100%;
-
     .el-scrollbar__wrap {
-      overflow-x: hidden !important;
+      max-height: 180px;
     }
-
-    .el-scrollbar__view {
-      padding-right: 16px;
-      overflow-x: visible;
-    }
-
     .sds-table-filter__checkbox-group {
+      padding: 4px 16px;
+      max-width: 160px;
       .el-checkbox {
         @include flex(unset, center);
         height: 32px;

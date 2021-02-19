@@ -1,5 +1,8 @@
 <template>
-  <div :class="['sds-base-set-item', isActive ? 'is-active' : '', baseSet.accrdion ? 'sds-base-set-item--accrdion': '']">
+  <div :class="[
+    'sds-base-set-item',
+    isActive ? 'is-active' : '',
+    baseSet.accrdion ? 'sds-base-set-item--accrdion': '']">
     <div class="sds-base-set-item__header">
       <div class="sds-base-set-item__header-title">
         {{title}}
@@ -72,7 +75,8 @@
         return JSON.stringify(this.formData) !== this.initedData
       },
       buttonText () {
-        return this.isActive ? this.$t('components.base_set_collasp') : this.$t(`components.base_set_${this.buttonName}`)
+        return this.isActive ? this.$t('components.base_set_collasp')
+          : this.$t(`components.base_set_${this.buttonName}`)
       },
       isActive () {
         return this.baseSet.activeNames.indexOf(this.name) > -1

@@ -1,7 +1,7 @@
 <template>
   <div class="sds-tree__container">
     <div class="sds-tree__search"
-         v-if="$slots.search || showSearch" @click="pauseEvent">
+      v-if="$slots.search || showSearch" @click="pauseEvent">
       <slot name="search">
         <el-input
           :placeholder="placeholder"
@@ -12,7 +12,7 @@
       </slot>
     </div>
     <div class="sds-tree__description"
-         v-if="$slots.description || showDescription" @click="pauseEvent">
+      v-if="$slots.description || showDescription" @click="pauseEvent">
       <slot name="description">
         <span>{{description}}</span>
       </slot>
@@ -41,19 +41,53 @@
               <slot name="label">
                 <span v-if="showCheckRadio && node.isLeaf">
                   <el-radio :label="data.label"
-                            v-model="selectedVal"
+                    v-model="selectedVal"
+                    class="tree-radio">
+                    <span>
+                      <span class="custom-tree-node__label-text">{{data.label}}</span>
+                      <span :title="data.desc"
+                        v-if="!!data.desc"
+                        class="custom-tree-node__label-desc"
+                        :class="data.descClass">
+                        {{data.desc}}
+                      </span>
+                      <span v-if="!!data.status"
+                        class="custom-tree-node__label-status"
+                        :class="data.statusClass">
+                        {{data.status}}
+                      </span>
+                    </span>
+                  </el-radio>
+                </span>
+                <span v-if="showCheckRadioMultiple && node.isLeaf">
+                  <el-radio :label="data.label"
+                            v-model="selectedMultipleVal[getFirstParent(node)]"
                             class="tree-radio">
                     <span>
                       <span class="custom-tree-node__label-text">{{data.label}}</span>
-                      <span :title="data.desc" v-if="!!data.desc" class="custom-tree-node__label-desc" :class="data.descClass"> {{data.desc}}</span>
-                      <span v-if="!!data.status" class="custom-tree-node__label-status" :class="data.statusClass"> {{data.status}}</span>
+                      <span :title="data.desc"
+                            v-if="!!data.desc"
+                            class="custom-tree-node__label-desc"
+                            :class="data.descClass"> {{data.desc}}</span>
+                      <span v-if="!!data.status"
+                            class="custom-tree-node__label-status"
+                            :class="data.statusClass"> {{data.status}}</span>
                     </span>
                   </el-radio>
                 </span>
                 <span v-else>
                   <span class="custom-tree-node__label-text">{{data.label}}</span>
-                  <span :title="data.desc" v-if="!!data.desc" class="custom-tree-node__label-desc" :class="data.descClass"> {{data.desc}}</span>
-                  <span v-if="!!data.status" class="custom-tree-node__label-status" :class="data.statusClass"> {{data.status}}</span>
+                  <span :title="data.desc"
+                    v-if="!!data.desc"
+                    class="custom-tree-node__label-desc"
+                    :class="data.descClass">
+                    {{data.desc}}
+                  </span>
+                  <span v-if="!!data.status"
+                    class="custom-tree-node__label-status"
+                    :class="data.statusClass">
+                    {{data.status}}
+                  </span>
                 </span>
               </slot>
             </label>
@@ -117,6 +151,10 @@
         type: Boolean,
         default: false
       },
+      showCheckRadioMultiple: {
+        type: Boolean,
+        default: false
+      },
       getStatusClass: Function,
       // tree初始选中/选择的值
       defaultKeys: Array
@@ -134,7 +172,8 @@
         selectedVal: '',
         defaultExpendedKeys: [],
         // tree的选中值，为Object/array
-        value: ''
+        value: '',
+        selectedMultipleVal: {} // 每个node的level为1的节点各有一个val
       }
     },
     watch: {
@@ -156,10 +195,25 @@
       }
     },
     mounted () {
-      this.getCheckedNodes();
       this.setDefaultKeys(this.defaultKeys);
+      if (this.showCheckRadioMultiple) {
+        this.getTreeMultipleModel(this.treeData)
+      }
     },
     methods: {
+      getTreeMultipleModel (treeData) {
+        if (!treeData) {
+          return null;
+        }
+        treeData.map(node => {
+          // 仅仅遍历一层，不考虑多层情况
+          this.selectedMultipleVal[node.id] = ""
+        })
+      },
+      getFirstParent (node) {
+        console.log(this.selectedMultipleVal)
+        return node.level !== 1 ? this.getFirstParent(node.parent) : node.data.id
+      },
       /**
        * 阻止description下的click触发select的click
        */
@@ -212,7 +266,7 @@
               this.defaultExpendedKeys = []
             }
             // 设置v-model的值
-            this.value = this.$refs[this.treeRef].getHalfCheckedNodes()
+            this.value = this.$refs[this.treeRef].getCheckedNodes()
           } else if (this.showCheckRadio) { // tree为单选
             if (keys.length === 0) { // 单选清除
               this.selectedVal = '';
@@ -256,18 +310,14 @@
        * @return getCheckedNodes
        */
       getCheckedNodes () {
-        this.$on('checkedNodes', (res) => {
-          this.$emit('getCheckedNodes', this.$refs[this.treeRef].getCheckedNodes())
-        })
+        return this.$refs[this.treeRef].getCheckedNodes();
       },
       /**
        * 获取选中状态的keys
        * @return getCheckedKeys
        */
       getCheckedKeys () {
-        this.$on('checkedKeys', (res) => {
-          this.$emit('getCheckedKeys', this.$refs[this.treeRef].getCheckedKeys())
-        })
+        return this.$refs[this.treeRef].getCheckedKeys();
       },
       /**
        * 复选框被点击时触发
@@ -276,8 +326,8 @@
        */
       check (node, data) {
         if (this.showCheckbox) {
-          this.value = this.$refs[this.treeRef].getCheckedNodes()
-          this.$emit('check', node, data)
+          this.value = this.getCheckedNodes();
+          this.$emit('check', node, data);
         }
       },
       /**
@@ -290,15 +340,18 @@
         return data.label.indexOf(value) !== -1;
       },
       /**
-       * 除复选和单选之外的节点点击事件
+       * 除复选的节点点击事件
        * @param data
        * @param node
        * @param tree
        */
       handleNodeClick (data, node, tree) {
-        if (!this.showCheckbox) {
+        if (this.showCheckRadioMultiple) {
+          this.value = Object.values(this.selectedMultipleVal).filter(s => { return s && s.trim() })
+          this.$emit("node-click", data, node, tree)
+        } else if (!this.showCheckbox) {
           this.value = data
-          this.$emit("nodeClick", data, node, tree)
+          this.$emit("node-click", data, node, tree)
         }
       }
     }

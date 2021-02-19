@@ -254,7 +254,7 @@
       handleScrollEnd () {
         let pagination = this.pagination;
         if (!pagination || this.requesting ||
-          pagination.pagenum === pagination.total) {
+          Number(pagination.pagenum) === Number(pagination.total)) {
           return;
         }
         let params = {

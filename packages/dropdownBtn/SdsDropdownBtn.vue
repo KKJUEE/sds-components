@@ -1,9 +1,24 @@
 <template>
-  <el-dropdown v-split-btn v-on="$listeners" v-bind="$attrs" @visible-change="handleChange" :split-button="type==='split-button'" class="sds-dropdown-btn">
-    <el-button type="more" icon="fa fa-ellipsis-h" :class="{'is-hover': show}" v-if="type==='more'">{{btnName}}</el-button>
+  <el-dropdown v-split-btn
+    v-on="$listeners"
+    v-bind="$attrs"
+    @visible-change="handleVisibleChange"
+    :split-button="type==='split-button'"
+    class="sds-dropdown-btn">
+    <el-button type="more" icon="fa fa-ellipsis-h"
+      :class="{'is-hover': show}"
+      v-if="type==='more'">
+      {{btnName}}
+    </el-button>
     {{content}}
     <el-dropdown-menu slot="dropdown" class="sds-more-btn-menu">
-      <el-dropdown-item v-for="item in options" :key="item.command" v-bind="item">{{item.text}}</el-dropdown-item>
+      <slot>
+        <el-dropdown-item v-for="item in options"
+          :key="item.command"
+          v-bind="item">
+          {{item.text}}
+        </el-dropdown-item>
+      </slot>
     </el-dropdown-menu>
   </el-dropdown>
 </template>
@@ -54,8 +69,8 @@
       }
     },
     methods: {
-      handleChange (e) {
-        this.show = e
+      handleVisibleChange (visible) {
+        this.show = visible
       }
     }
   }

@@ -1,51 +1,69 @@
 .sds-action-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   margin-bottom: 10px;
-  .sds-button-group {
+  .el-button {
+    padding: $sds-button-padding-vertical $sds-button-padding-horizontal;
   }
-
-  .sds-addtional-bar__body {
-    @media screen and (max-width: 1200px){
-      display: none;
+}
+.sds-action-bar-left, .sds-action-bar-right {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  & > * {
+    flex: 0 0 auto;
+  }
+}
+.sds-action-bar-left {
+  .el-button-group + .el-button,
+  .el-button + .el-button-group {
+    margin-left: 12px;
+  }
+}
+.sds-action-bar-right {
+  justify-content: flex-end;
+  .el-input {
+    width: 60%;
+  }
+  .sds-action-bar-right-fresh-btn {
+    font-size: $sds-font-size-small;
+    margin-right: 8px;
+  }
+  .el-icon-search {
+    &:hover {
+      color: $sds-primary-color;
     }
-    @include flex(flex-end);
-    .el-input {
-      width: 60%;
-      margin-right: 5px;
-    }
-    .sds-addtional-bar__button--fresh {
-      margin-right: 5px;
-    }
-    .el-icon-search {
-      &:hover {
-        color: $sds-primary-color;
+  }
+}
+.sds-action-bar-right-radio-group {
+  margin-left: 8px;
+  .el-radio-button {
+    &.is-focus {
+      .el-radio-button__inner {
+        color: $sds-primary-text-color;
+        background-color: $sds-white-color;
       }
     }
-    .sds-addtional-bar__btngroup {
-      margin-right: 5px;
-      .el-button {
-        padding: 8px 5px;
-        font-size: 14px;
-        color: $sds-button-group-active-bg-color;
+    &.is-active {
+      .el-radio-button__inner {
+        color: $sds-table-icon-primary-text-color;
+        background-color: $sds-button-group-active-bg-color;
         border-color: $sds-button-group-active-bg-color;
-        border-radius: 4px;
-        box-sizing: border-box;
-        &:first-child {
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
-        }
-        &:last-child {
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
-        }
-        &:hover{
-          color: $sds-primary-text-color;
-          text-decoration: underline;
-        }
-        &.isactive {
-          color: $sds-table-icon-primary-text-color;
-          background-color: $sds-button-group-active-bg-color;
-        }
       }
+    }
+  }
+  .el-radio-button__inner {
+    padding: 8px 5px;
+    font-size: 14px;
+    color: $sds-button-group-active-bg-color;
+    border: 1px solid $sds-button-group-active-bg-color !important;
+    border-radius: 4px;
+    background-color: $sds-white-color;
+    box-shadow: none !important;
+    &:hover{
+      color: $sds-primary-text-color;
+      text-decoration: underline;
     }
   }
 }

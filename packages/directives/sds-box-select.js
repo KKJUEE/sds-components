@@ -1,4 +1,4 @@
-import { on, off } from 'element-ui/src/utils/dom';
+import { on, off } from 'element-ui/lib/utils/dom';
 
 export default {
   install (Vue) {

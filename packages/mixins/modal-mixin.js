@@ -1,15 +1,26 @@
-import SdsModal from "../../packages/modal/SdsModal";
 export default {
-  components: {
-    SdsModal
+  props: {
+    destroyAfterHidden: {
+      type: Boolean,
+      default: true
+    }
   },
   data () {
     return {
       modalShow: false
     }
   },
+  mounted () {
+    if (this.destroyAfterHidden) {
+      let modalIns = this.$children[0];
+      modalIns.$on("sds-modal-hidden", () => {
+        modalIns = null;
+        this.$destroy();
+      });
+    }
+  },
   methods: {
-    show () {
+    showModal () {
       this.modalShow = true;
     }
   }

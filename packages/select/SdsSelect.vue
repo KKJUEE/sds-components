@@ -8,12 +8,14 @@
         :props="defaultProps"
         :node-key="nodeKey"
         :ref="treeRef"
-        :default-keys="defaultKeys"
+        v-model="selectArray"
+        :default-keys="defaultCheckedKeys"
         :highlight-current="!showCheckbox && !showCheckRadio"
         :show-checkbox="showCheckbox"
         :show-check-radio="showCheckRadio"
+        :show-check-radio-multiple="showCheckRadioMultiple"
         :default-expand-keys="defaultExpandedKey"
-        @nodeClick="handleNodeClick"
+        @node-click="handleNodeClick"
         @check="check">
         <template v-slot:description>
           <slot name="description"></slot>
@@ -26,6 +28,8 @@
 </template>
 
 <script>
+  import { formatStr } from "../utils/utils";
+
   export default {
     name: "sds-select",
     inheritAttrs: false,
@@ -39,6 +43,7 @@
         selectNode: Array,
         // 默认展开/选中项
         defaultExpandedKey: [],
+        defaultCheckedKeys: this.defaultKeys,
         defaultProps: {
           children: 'children',
           label: 'label'
@@ -51,6 +56,10 @@
         default: 'tree'
       },
       data: Array,
+      simple: {
+        type: Boolean,
+        default: false
+      },
       nodeKey: {
         type: String,
         default: 'id'
@@ -70,17 +79,33 @@
         type: Boolean,
         default: false
       },
+      showCheckRadioMultiple: {
+        type: Boolean,
+        default: false
+      },
       // 高亮
       highlightCurrent: {
         type: Boolean,
         default: false
       },
       // 初始选中/选中的项
-      defaultKeys: Array
+      defaultKeys: Array,
+      formatSelectText: {
+        type: String,
+        default () {
+          return this.$t("components.select_item");
+        }
+      }
     },
     watch: {
       selectArray (newVal, oldVal) {
-        this.$emit('input', newVal)
+        if (((this.simple && !this.showCheckbox) || this.showCheckRadio) &&
+          newVal.length !== 0 && newVal[0].children &&
+          newVal[0].children.length !== 0) {
+          this.$emit('input', [])
+        } else {
+          this.$emit('input', newVal)
+        }
       },
       defaultKeys (val) {
         this.setDefaultKeys(val)
@@ -94,11 +119,12 @@
           this.getSelectNodes(node, keys)
           this.selectArray = this.selectNode
         }
+        const formatText = this.formatSelectText;
         // 设置选中项和v-model
         if (!this.showCheckbox) {
           this.value = this.selectNode.length !== 0 ? this.selectNode[0].label : ''
         } else {
-          this.value = keys.length !== 0 ? `已选中${keys.length}项` : '';
+          this.value = keys.length !== 0 ? formatStr(formatText, keys.length) : '';
         }
       },
       /**
@@ -115,25 +141,34 @@
         }
       },
       check (node, data) {
-        let avaiableNode = data.checkedNodes && data.checkedNodes.filter(checked => {
-          return !checked.children || (checked.children && checked.children.length === 0)
-        })
-        this.selectArray = avaiableNode
-        this.value = avaiableNode.length !== 0 ? `已选中${avaiableNode.length}项` : '';
-        this.$emit('check', node, data)
+        if (this.showCheckbox) {
+          let avaiableNode = data.checkedNodes && data.checkedNodes.filter(checked => {
+            return !checked.children || (checked.children && checked.children.length === 0)
+          });
+          this.selectArray = avaiableNode;
+          const formatText = this.formatSelectText;
+          const len = avaiableNode.length;
+          this.value = len !== 0 ? formatStr(formatText, len) : '';
+          this.$emit('check', node, data)
+        }
       },
       handleNodeClick (data, node, tree) {
-        this.selectArray = [data]
-        this.value = data.label
+        if (this.showCheckRadioMultiple) {
+          this.value = this.selectArray.length !== 0 ? `已选中${this.selectArray.length}项` : '';
+        } else {
+          this.selectArray = [data]
+          if (((this.simple && !this.showCheckbox) || this.showCheckRadio) &&
+            data.children && data.children.length !== 0) {
+            this.value = ''
+          } else {
+            this.value = data.label
+          }
+        }
       },
       handleClear () {
-        this.$refs[this.treeRef].$emit('setKeys', [])
+        this.defaultCheckedKeys = []
         this.selectArray = [];
       }
     }
   }
 </script>
-
-<style scoped>
-
-</style>

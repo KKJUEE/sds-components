@@ -56,6 +56,7 @@ export default {
   base_set_modal_title: '是否保存对“{title}”的更改？',
   base_set_modal_tip: '配置未保存',
   select_length: '已选 {0} 个',
+  select_item: '已选中{0}项',
   btn_login: "立即登录",
   btn_back: "返回",
   btn_continue_create: "继续创建",

@@ -1,4 +1,13 @@
-import { isObject, mergeOptions } from "./utils";
+import {
+  isObject,
+  mergeOptions,
+  transformCapacity,
+  formatStr,
+  formatUnitValue,
+  isUnDefined
+} from "./utils";
+import { formatDate } from "element-ui/lib/utils/date-util";
+import i18n from "@/locale";
 
 const SERIES_TYPE = {
   LINE: "line",
@@ -126,11 +135,11 @@ const DEFAULT_GRID_OPTIONS = {
   // grid 组件离容器上侧的距离
   // 可选值：'top', 'middle', 'bottom'
   // 可以是 20 这样的具体像素值，也可以是 '20%' 这样相对于容器高度的百分比
-  top: "5",
+  top: 5,
   // grid 组件离容器右侧的距离,其余同left
   right: "3%",
   // grid 组件离容器下侧的距离,其余同top
-  bottom: "3",
+  bottom: 3,
   // grid 组件的宽度。默认自适应
   width: "auto",
   // grid 组件的高度。默认自适应
@@ -163,7 +172,7 @@ const DEFAULT_XAXIS_OPTIONS = {
   // 坐标轴名称文本样式设置
   nameTextStyle: {
     // 不设时默认取axisLine.lineStyle.color
-    color: "#8a8a8a",
+    color: "#333",
     fontSize: 14,
     align: 'left'
   },
@@ -183,8 +192,8 @@ const DEFAULT_XAXIS_OPTIONS = {
   splitNumber: 4,
   // 自动计算的坐标轴最小间隔大小
   // 只在数值轴或时间轴中有效
-  // 可以设置成0保证坐标轴分割段数显示成整数
-  minInterval: 0,
+  // 可以设置成1保证坐标轴分割段数显示成整数
+  minInterval: 1,
   // 自动计算的坐标轴最大间隔大小
   // 只在数值轴或时间轴中有效
   maxInterval: null,
@@ -237,14 +246,13 @@ const DEFAULT_XAXIS_OPTIONS = {
       color: ['#ccc']
     }
   },
-  // 类目数据，在类目轴中有效
-  data: []
 };
 
 const DEFAULT_YAXIS_OPTIONS = {
   ...DEFAULT_XAXIS_OPTIONS,
   type: "value",
-  position: "left"
+  position: "left",
+  boundaryGap: [0, "30%"],
 };
 
 const DEFAULT_LINE_OPTIONS = {
@@ -252,7 +260,7 @@ const DEFAULT_LINE_OPTIONS = {
   // 图形名称，用于tooltip的显示，legend的图例筛选
   name: "",
   // 是否平滑曲线显示
-  smooth: true,
+  smooth: false,
   // hover图例时的是否联动高亮
   legendHoverLink: true,
   // 折线标记的图形
@@ -285,7 +293,6 @@ const DEFAULT_LINE_OPTIONS = {
       show: false
     }
   },
-  data: []
 };
 
 const DEFAULT_PIE_OPTIONS = {
@@ -332,7 +339,7 @@ const DEFAULT_PIE_OPTIONS = {
   emphasis: {
     // 高亮时图形上的文本标签设置，同emphasis层级的label
     label: {
-      show: true,
+      show: false,
     }
   },
   // 饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标
@@ -354,7 +361,8 @@ const DEFAULT_BAR_OPTIONS = {
   label: {
     show: false,
     // 标签的位置
-    // 可选值：top / left / right / bottom / inside / insideLeft / insideRight / insideTop / insideBottom / insideTopLeft / insideBottomLeft / insideTopRight / insideBottomRight
+    // 可选值：top / left / right / bottom / inside / insideLeft / insideRight / insideTop
+    // insideBottom / insideTopLeft / insideBottomLeft / insideTopRight / insideBottomRight
     // 也可以用一个数组表示相对的百分比或者绝对像素值表示标签相对于图形包围盒左上角的位置
     position: "top"
   },
@@ -379,15 +387,14 @@ const DEFAULT_BAR_OPTIONS = {
 };
 
 const DEFAULT_COLORS = {
-  line: ['#0D91F3'],
-  dbline: ['#FF9F1C', '#0D91F3'],
-  pie: ['#0D91F3', '#DEDEDE'],
-  health: ["#66bb96", "#ffe54d", "#ff91fc", "#DEDEDE"],
-  capcity_pie: ["#5FA0F8", "#F0F2F5"]
+  LINE: ['#0D91F3'],
+  DOUBLE_LINE: ['#FFC307', '#0D91F3'],
+  TRIPLE_LINE: ['#FFC307', '#0D91F3', "#954CFF"],
+  PIE: ['#0D91F3', '#F0F2F5'],
 };
 
 // 获取线性渐变的颜色
-function getLinearGradientOptions (startColor, endColor) {
+function getLinearGradientColor (startColor, endColor) {
   return {
     type: "linear",
     x: 0,
@@ -396,16 +403,14 @@ function getLinearGradientOptions (startColor, endColor) {
     y2: 1,
     colorStops: [
       {
-        offset: 0,
+        offset: 1,
         color: startColor // 0% 处的颜色
       },
       {
-        offset: 1,
+        offset: 0,
         color: endColor // 100% 处的颜色
       }
-    ],
-    // 区域填充的透明度，取值0-1
-    opacity: 1,
+    ]
   }
 }
 
@@ -498,6 +503,169 @@ function getSeriesBarOptions (name, data, options = {}) {
   return getSeriesOptions(SERIES_TYPE.BAR, name, data, options);
 }
 
+function getLineCapcityTooltip () {
+  return getTooltipOptions("axis", {
+    formatter (params) {
+      const param = params[0];
+      const value = param.value;
+      const seriesName = param.seriesName;
+      const time = formatDate(new Date(value[0] * 1000)) + "<br>";
+      const cap = transformCapacity(value[1]);
+      const color = param.color;
+      return `<span>${time}<span class="after-colon">
+        <span class="sds-series-dot" style="background-color:${color}"></span>
+        ${seriesName}</span><span>${cap}</span></span>`;
+    }
+  });
+}
+/**
+ * series name 与 legend name是一一对应关系，对于legend来说系列名称是唯一标识
+ * 所以，对于不同系列但名称相同的系列，需要建立别名映射关系
+ * {'系列名': {alias: '别名', formatter: "string/function"}} or {'系列名': '别名'}
+ * @params {object} seriesNameMap
+ * */
+function getLineTooltip (seriesNameMap) {
+  seriesNameMap = isObject(seriesNameMap) ? seriesNameMap : {};
+  return getTooltipOptions("axis", {
+    formatter (params) {
+      let result = {};
+      let time;
+      params.forEach(param => {
+        let formatter;
+        let title = "";
+        const seriesName = param.seriesName;
+        let alias = seriesName;
+        const data = param.data;
+        const seriesIndex = param.seriesIndex;
+        const color = param.color;
+        let value = data[seriesIndex + 1];
+        const axisValue = param.axisValue;
+        const seriesNameMapVal = seriesNameMap[seriesName];
+        // grid index
+        const axisIndex = param.axisIndex;
+        if (typeof seriesNameMapVal === "string") {
+          alias = seriesNameMapVal;
+        } else if (isObject(seriesNameMapVal)) {
+          alias = seriesNameMapVal.alias;
+          formatter = seriesNameMapVal.formatter;
+          title = seriesNameMapVal.title;
+        }
+        value = formatUnitValue(value, formatter);
+        time = time || formatDate(new Date(axisValue * 1000), "yyyy-MM-dd HH:mm");
+        title && (title = `<span>${title}</span><br>`);
+        result[axisIndex] = result[axisIndex] || title;
+        result[axisIndex] = result[axisIndex] + `<span class="after-colon">
+          <span class="sds-series-dot" style="background-color:${color}"></span>
+          ${alias}</span><span>${value}</span><br>`;
+      });
+      let temp = "";
+      Object.keys(result).forEach((key) => {
+        temp = temp + result[key] + "<br>";
+      });
+      return `<span>${time}</span><br>` + temp;
+    }
+  });
+}
+
+function generateLegendTitles (...titleTexts) {
+  return titleTexts.map(text => {
+    return {
+      show: false,
+      text: text
+    }
+  });
+}
+/**
+ * @param {string|number} firstTop - 第一个grid具体容器顶部的距离的百分比
+ * @param {string|number} left
+ * @param {string|number} right
+ * @param {string|number} verticalSpace -  grid间垂直方向上空隙百分比
+ * */
+function generateGrids (firstTop, left, right, verticalSpace, ...heights) {
+  const len = heights.length;
+  verticalSpace = parseFloat(verticalSpace || 10);
+  firstTop = isUnDefined(firstTop) ? (1 / (16 * len)).toFixed(2) * 100 : firstTop;
+  firstTop = parseFloat(firstTop);
+  left = isUnDefined(left) ? "8%" : left;
+  right = isUnDefined(right) ? 0 : right;
+  return heights.map((height, index) => {
+    height = parseFloat(height);
+    let top = index * (height + verticalSpace) + firstTop;
+    return {
+      top: top + "%",
+      left: left,
+      right: right,
+      height: height + "%",
+      containLabel: false
+    }
+  });
+}
+
+function generateXAxis (formatter, ...options) {
+  return options.map((option, index) => {
+    option = option || {};
+    return getXAxisOptions({
+      gridIndex: index,
+      axisLabel: {
+        formatter: formatter,
+      },
+      maxInterval: 24 * 60 * 60,
+      ...option
+    })
+  });
+}
+
+function generateXAxisTimeFormatter (data = []) {
+  const startTime = data[0][0] * 1000;
+  const endTime = data[data.length - 1][0] * 1000;
+  let format = "HH:mm";
+  if (endTime - startTime > 24 * 60 * 60 * 1000) {
+    format = "MM-dd HH:mm";
+  }
+  return function formatter (value, index, innerFormat) {
+    return formatDate(new Date(value * 1000), innerFormat || format);
+  }
+}
+
+function generateYAxis (formatters, ...options) {
+  formatters = formatters || [];
+  return options.map((option, index) => {
+    option = option || {};
+    return getYAxisOptions({
+      gridIndex: index,
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
+      axisLabel: {
+        formatter: formatters[index] || "{value}",
+        margin: 10
+      },
+      splitLine: {
+        show: true,
+        lineStyle: {
+          type: "dashed"
+        }
+      },
+      ...option
+    });
+  });
+}
+
+function generateAnalysisTimeOptions () {
+  return [
+    { label: i18n.t("common.real_time"), value: 0 },
+    { label: formatStr(i18n.t("common.hour_within"), 3), value: "-3h" },
+    { label: formatStr(i18n.t("common.day_within"), 1), value: "-1d" },
+    { label: formatStr(i18n.t("common.week_within"), 1), value: "-1w" },
+    { label: formatStr(i18n.t("common.month_within"), 1), value: "-1m" },
+    { label: formatStr(i18n.t("common.month_within"), 3), value: "-3m" },
+    { label: i18n.t("common.custom_time"), value: 1 }
+  ]
+}
+
 export {
   getTitleOptions,
   getLegendOptions,
@@ -505,10 +673,18 @@ export {
   getGridOptions,
   getXAxisOptions,
   getYAxisOptions,
-  getLinearGradientOptions,
+  getLinearGradientColor,
   getSeriesOptions,
   getSeriesLineOptions,
   getSeriesPieOptions,
   getSeriesBarOptions,
-  DEFAULT_COLORS
+  DEFAULT_COLORS,
+  getLineCapcityTooltip,
+  generateLegendTitles,
+  generateGrids,
+  generateXAxis,
+  generateYAxis,
+  generateXAxisTimeFormatter,
+  getLineTooltip,
+  generateAnalysisTimeOptions
 }

@@ -1,6 +1,6 @@
 {
   "name": "sds-components",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "main": "lib/index/index.js",
   "keyword": "sdsComponents",
   "description": "用Vue Cli3实现sds组件库每个组件分开打包，使用babel-plugin-import实现组件按需引入",
@@ -11,7 +11,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "sass": "sass",
-    "lib": "vue-cli-service build --target lib --name sds-tag --dest lib packages/src/components/index.js"
+    "lib": "vue-cli-service build --target lib --name sds-ui --dest dest packages/index.js"
   },
   "dependencies": {
     "babel-plugin-component": "^1.1.1",

@@ -22,32 +22,6 @@
   z-index: $zIndex;
 }
 
-@mixin text-hidden ($width: 100%){
-  min-width: 16px;
-  width: $width;
-  overflow: hidden;
-  white-space: nowrap;
-  word-wrap: normal;
-  text-overflow: ellipsis;
-  word-break: break-all;
-}
-
-@mixin tag-text ($color: $sds-primary-color) {
-  color: $color;
-  border-color: rgba($color, 0.4);
-  & > .el-tag__close {
-    color: $color;
-    &:hover, &:active {
-      color: $sds-white-color;
-      background-color: $color;
-    }
-  }
-}
-
-@mixin tag-background ($color: $sds-primary-color) {
-  background-color: $color;
-}
-
 @mixin progress-style ($color: $sds-primary-color) {
   background: $color;
   &.el-button {
