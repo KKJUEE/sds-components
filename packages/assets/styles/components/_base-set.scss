@@ -1,0 +1,38 @@
+.sds-base-set-item{
+  font-size: 14px;
+  border-bottom: 1px solid #ebebeb;
+  padding: 18px 16px;
+  margin-bottom: 10px;
+  &.is-active{
+    border: 1px solid $sds-primary-color;
+    border-radius: 4px;
+  }
+  &.sds-base-set-item--accrdion{
+    margin-bottom: 0px;
+  }
+  .sds-base-set-item__header{
+    @include flex(space-between, center);
+    height: 22px;
+    .sds-base-set-item__header-title{
+      color: $sds-primary-text-color;
+      font-weight: bolder;
+      i{
+        color: $sds-lighter-color;
+        cursor: pointer;
+      }
+    }
+    .sds-base-set-item__header-button{
+      color: $sds-primary-color
+    }
+  }
+  .sds-base-set-item__description{
+    height: 22px;
+    color: $sds-light-color;
+  }
+  .sds-base-set-item__content-body{
+    margin-top: 20px;
+  }
+  .sds-base-set-item__content-button{
+    padding: 10px 0 14px;
+  }
+}

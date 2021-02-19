@@ -1,0 +1,21 @@
+@import "../themes/default";
+.sds-empty {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  line-height: 20px;
+  height: 100%;
+}
+.sds-empty-image-wrapper {
+  margin-bottom: 8px;
+  & > img {
+    height: 42px;
+    width: 64px;
+  }
+}
+.sds-empty-description {
+  color: $sds-disabled-text-color;
+  font-size: 14px;
+}

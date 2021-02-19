@@ -1,0 +1,362 @@
+@mixin wordBreak () {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sds-table {
+  // 表格整体
+  thead,
+  thead > tr > th,
+  thead > tr > th > .cell {
+    width: 100%;
+    min-height: $sds-table-thead-height;
+    padding: 0 5px;
+    color: $sds-table-text-color;
+    background: $sds-table-thead-bg-color;
+    border-bottom-color: $sds-table-border-bottom-color;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .el-table-column--selection{
+    .cell{
+      justify-content: center;
+    }
+  }
+  thead > tr > th > .cell {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .el-table__body-wrapper{
+    &::-webkit-scrollbar{
+      height: 8px;
+      background: rgba($sds-table-scrollbar-color,.06);
+    }
+    &::-webkit-scrollbar-thumb{
+      border-radius: 10px;
+      right: 2px;
+      box-shadow: inset 0 0 5px rgba($sds-table-scrollbar-color,.2);
+      height: 6px;
+      width: 50%;
+      background: $sds-table-scrollbar-thumb-color;
+      border-bottom:none;
+      -webkit-transition: background-color .2s linear, width .2s ease-in-out;
+    }
+    &::-webkit-scrollbar-track{
+      background: $sds-table-scrollbar-track-color;
+      border-radius: 10px;
+      border-bottom:none;
+    }
+  }
+  tbody {
+    tr {
+      height: $sds-table-tr-height;
+      &:hover {
+        td {
+          background: $sds-table-tbody-tr-hover-bg-color!important;
+        }
+      }
+      &.ing:hover {
+        td {
+          background: none !important;
+        }
+      }
+      td {
+        padding: 0 5px;
+        .cell {
+          width: 100%!important;
+          padding-left: 5px;
+          padding-right: 5px;
+        }
+        &.is-center{
+          .sds-table-column__body{
+            justify-content: center;
+          }
+        }
+        &.is-right{
+          padding-left: 0;
+          .sds-table-column__body{
+            justify-content: flex-end;
+          }
+        }
+        &.is-left{
+          padding-right: 0;
+          .sds-table-column__body{
+            justify-content: flex-start;
+          }
+        }
+      }
+      &.sds-row-mask{
+        background: rgba($sds-table-row-unhealthy-bg-color, .85);
+        cursor: not-allowed;
+        z-index: 8000;
+        position: relative;
+        td *{
+          pointer-events: none;
+          color: $sds-table-cell-unhealthy-text-color;
+          background: inherit;
+          border-color: $sds-table-cell-unhealthy-border-color;
+        }
+        &::after{
+          display: block;
+          position: absolute;
+          height: 41px;
+          left:50%;
+          line-height: 41px;
+        }
+        &:not(.sds-row-mask--empty) {
+          color: $sds-table-row-wrapper-status-primary;
+        }
+      }
+      @each $status in $sds-table-row-primary-status-en{
+        $i: index($sds-table-row-primary-status-en, $status);
+        &.sds-row-#{$status}--zh::after{
+          content: "#{nth($sds-table-row-primary-status-zh, $i)}";
+        }
+      }
+      @each $status in $sds-table-row-negative-status-en{
+        $i: index($sds-table-row-negative-status-en, $status);
+        &.sds-row-#{$status}--zh::after{
+          content: "#{nth($sds-table-row-negative-status-zh, $i)}";
+          color: $sds-table-row-wrapper-status-negative;
+        }
+      }
+      @each $status in $sds-table-row-primary-status-en{
+        &.sds-row-#{$status}--en::after{
+          content: "#{$status}";
+        }
+      }
+      @each $status in $sds-table-row-negative-status-en{
+        &.sds-row-#{$status}--en::after{
+          content: "#{$status}";
+          color: $sds-table-row-wrapper-status-negative;
+        }
+      }
+      &.sds-row-mask--empty{
+        color: $sds-table-row-wrapper-status-positive;
+        height: 41px;
+        background: rgba($sds-table-row-unhealthy-bg-color, .85);
+        cursor: not-allowed;
+        z-index: 8000;
+        position: relative;
+        &::after{
+          content: attr(data-number);
+          display: block;
+          position: absolute;
+          height: 41px;
+          left:50%;
+          line-height: 41px;
+        }
+      }
+    }
+  }
+  .el-table__empty-block{
+    height: 280px!important;
+  }
+  .sds-table-column__body {
+    @include flex(unset, center);
+  }
+  .sds-table-column__cell{
+    @include wordBreak();
+    max-width: calc(100% - 20px);
+    display: inline-block;
+  }
+  .el-table__expanded-cell{
+    padding: 0 48px;
+  }
+
+  // 点操作栏
+  .sds-dot-tools {
+    display: none;
+    position: relative;
+    top: -2px;
+    width: 15px;
+    padding-left: 5px;
+  }
+  .sds-table-cell--active {
+    display: flex;
+    justify-content: space-between!important;
+    .sds-dot-tools {
+      display: inline-block;
+      color: $sds-primary-color;
+      font-weight: bolder;
+      font-size: 20px;
+    }
+  }
+  .sds-dot-tools--text {
+    padding: 4px 0 5px!important;
+    box-sizing: border-box;
+    border: none;
+    &:hover{
+      color: $sds-table-dot-tool-hover-text-color;
+    }
+    &.isactive{
+      color: $sds-table-dot-tool-hover-text-color;
+    }
+  }
+
+  // 表头工具栏
+  .sds-thead-tools {
+    .fa {
+      padding-left: 8px;
+      padding-right: 8px;
+      font-size: 12px;
+      color: $sds-table-icon-color;
+
+      &:hover {
+        color: $sds-primary-color;
+      }
+
+      &.isactive {
+        color: $sds-primary-color;
+      }
+    }
+  }
+
+  // 筛选
+  .is-sortable {
+    .sort-caret.ascending {
+      &:hover {
+        border-bottom-color: $sds-primary-color;
+      }
+    }
+
+    .sort-caret.descending {
+      &:hover {
+        border-top-color: $sds-primary-color;
+      }
+    }
+  }
+
+  // 弹窗操作栏
+  .sds-cell-tools{
+    &>.el-button{
+      &:hover{
+        text-decoration: underline;
+      }
+      &.is_default{
+        color: $sds-table-text-color;
+      }
+    }
+    .sds-cell-tools--line{
+      display: inline-block;
+      padding-left: 10px;
+      font-size: 14px;
+      color:$sds-table-cell-tool-split-line-color;
+    }
+    .sds-dropdown-link{
+      margin-left: 10px;
+      .el-icon-arrow-down{
+        margin-left: 0;
+      }
+    }
+  }
+}
+  // 过滤
+.sds-table-filter {
+  min-width: unset;
+  padding: 0;
+  z-index: 9999!important;
+  background: $sds-table-column-popover-bg-color;
+  border: 1px solid $sds-table-column-popover-border-color;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 0 6px rgba($sds-table-column-popover-shadow-color, 0.15);
+
+  .popper__arrow{
+    display: none;
+  }
+  .sds-table-filter__content {
+    height: 160px;
+    padding: 0px 0px 0px 10px;
+  }
+
+  .sds-scrollbar {
+    height: 100%;
+
+    .el-scrollbar__wrap {
+      overflow-x: hidden !important;
+    }
+
+    .el-scrollbar__view {
+      padding-right: 16px;
+      overflow-x: visible;
+    }
+
+    .sds-table-filter__checkbox-group {
+      .el-checkbox {
+        @include flex(unset, center);
+        height: 32px;
+        margin-right: 0;
+      }
+    }
+  }
+
+  .sds-table-filter-bottom {
+    @include flex(center, center);
+    height: 32px;
+    border-top: 1px solid $sds-border-color-base$sds-border-color-base;
+    .el-button.is-disabled,
+    .el-button.is-disabled:hover,
+    .el-button.is-disabled:focus {
+      color: rgba($sds-table-column-popover-disabled-color,0.8);
+    }
+  }
+}
+// 可见列
+.sds-screen-column {
+  min-width: unset;
+  padding: 0;
+  z-index: 9999!important;
+  background: $sds-table-column-popover-bg-color;
+  border: 1px solid $sds-table-column-popover-border-color;
+  border-radius: 4px;
+  font-size: 12px;
+  box-shadow: 0 0 5px rgba($sds-table-column-popover-shadow-color, 0.15);
+
+  .popper__arrow{
+    display: none;
+  }
+  .sds-screen-column__header {
+    margin-top: 8px;
+    padding: 8px 24px 0 16px;
+    height: 24px;
+  }
+
+  .sds-screen-column__checkbox-group {
+    padding: 0px 0px 8px;
+    width: unset;
+  }
+  .el-checkbox {
+    @include flex(unset, center);
+    height: 24px;
+    padding: 0 24px 0 16px;
+    margin-right: 0;
+    color: $sds-secondary-text-color;
+    &:hover {
+      background-color: $sds-table-hight-light-color;
+    }
+  }
+  .el-checkbox__label {
+    padding-left: 8px;
+    height: 24px;
+  }
+
+  .sds-screen-column-bottom {
+    @include flex(flex-start, center);
+    padding: 16px;
+    height: 24px;
+    border-top: 1px solid $sds-border-color-base$sds-border-color-base;
+    .el-button.is-disabled,
+    .el-button.is-disabled:hover,
+    .el-button.is-disabled:focus {
+      color: rgba($sds-table-column-popover-disabled-color,0.8);
+    }
+  }
+}
+.sds-dot-tools-menu{
+  z-index: 9999!important;
+  &[x-placement^="bottom"]{
+    margin-top: -1px;
+  }
+}

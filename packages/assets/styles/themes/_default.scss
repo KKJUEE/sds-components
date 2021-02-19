@@ -1,0 +1,283 @@
+@import "../vars/color";
+// font
+$sds-font-size-extra-large: 20px;
+$sds-font-size-large: 18px;
+$sds-font-size-mid: 16px;
+$sds-font-size-base: 14px;
+$sds-font-size-small: 12px;
+$sds-font-line-height-base: 1.5;
+$sds-font-weight-base: 400;
+$sds-font-weight-mid: 500;
+$sds-font-weight-bold: 600;
+
+$sds-primary-color: $blue-3;
+$sds-secondary-color: $blue-5;
+$sds-disabled-color: $gray-2;
+$sds-light-color: $black-6;
+$sds-lighter-color: $gray-2;
+$sds-normal-color: $black-1;
+$sds-white-color: $white-1;
+$sds-black-color: $black-8;
+$sds-primary-background-color: $black-1;
+$sds-secondary-background-color: $white-1;
+$sds-third-background-color: $white-5;
+$sds-secondary-border-color: $gray-1;
+$sds-disabled-fill-color: $white-3;
+
+$sds-success-color: $green-3;
+$sds-warning-color: $yellow-3;
+$sds-danger-color: $red-3;
+$sds-info-color: $blue-4;
+$sds-success-color-light: $green-4;
+$sds-warning-color-light: $yellow-4;
+$sds-danger-color-light: $red-5;
+$sds-info-color-light: $blue-7;
+$sds-success-color-lighter: $green-5;
+$sds-warning-color-lighter: $yellow-5;
+$sds-danger-color-lighter: $red-6;
+$sds-info-color-lighter: $blue-8;
+
+// 文字
+$sds-primary-text-color: $sds-normal-color;
+$sds-secondary-text-color: $black-5;
+$sds-light-text-color: $sds-light-color;
+$sds-lighter-text-color: $sds-lighter-color;
+$sds-disabled-text-color: $sds-lighter-text-color;
+$sds-link-text-color: $sds-primary-color;
+$sds-table-link-text-color: $blue-1;
+$sds-error-text-color: $red-1;
+$sds-disabled-text-color: $sds-disabled-color;
+
+// bg
+$sds-bg-white-color: $sds-white-color;
+$sds-bg-secondary-white-color: $white-4;
+$sds-main-bg-color: $gray-5;
+
+// 侧边导航栏
+$sds-aside-primary-bg-color: $black-2;
+$sds-aside-secondary-bg-color: $black-3;
+$sds-aside-hover-bg-color: $black-4;
+$sds-aside-selected-bg-color: $sds-primary-color;
+$sds-aside-primary-text-color: $sds-white-color;
+$sds-aside-secondary-text-color: $gray-2;
+$sds-aside-item-left: 24px;
+$sds-aside-icon-size: 16px;
+$sds-aside-submenu-height: 44px;
+$sds-aside-menu-item-height: 40px;
+$sds-aside-menu-logo-height: 42px;
+
+// 顶栏
+$sds-header-primary-bg-color: $sds-bg-white-color;
+$sds-header-primary-text-color: $sds-secondary-text-color;
+$sds-header-hover-text-color: $sds-primary-text-color;
+$sds-header-font-size: $sds-font-size-base;
+$sds-header-alarm-icon-size: 14px;
+$sds-header-alarm-margin: 0 8px;
+
+// 页脚
+$sds-footer-bg-color: $gray-5;
+$sds-footer-text-color: $sds-light-text-color;
+$sds-footer-font-size: $sds-font-size-base;
+
+// border
+$sds-primary-border-color: $sds-primary-color;
+$sds-border-color-base: $gray-1;
+$sds-disabled-border-color-base: $gray-1;
+$sds-border-color-split: $gray-4;
+$sds-border-color-split-light: $gray-3;
+$sds-border-color-split-lighter: $white-3;
+$sds-border-base: 1px solid $sds-disabled-border-color-base;
+
+// 告警
+$sds-alarm-critical-color: $red-1;
+$sds-alarm-important-color: $yellow-1;
+$sds-alarm-warning-color: $yellow-2;
+$sds-alarm-info-color: $sds-primary-color;
+
+$sds-dropdown-item-hover-bg-color: $blue-8;
+$sds-dropdown-item-hover-color: $sds-primary-color;
+
+// button
+$sds-button-info-bg-color: $white-2;
+$sds-button-info-hover-bg-color: $gray-7;
+$sds-button-assit-more-color: $blue-12;
+$sds-button-assit-more-info-hover-color:$blue-2;
+$sds-button-padding-vertical: 9px;
+$sds-button-padding-horizontal: 16px;
+$sds-button-medium-font-size: 16px;
+$sds-button-medium-padding-vertical: 12px;
+$sds-button-medium-padding-horizontal: 20px;
+$sds-button-small-font-size: 12px;
+$sds-button-small-padding-vertical: 5px;
+$sds-button-small-padding-horizontal: 8px;
+
+// modal
+$sds-modal-border-radius: 4px;
+$sds-modal-body-bg-color: $sds-bg-white-color;
+$sds-modal-header-bg-color: $sds-bg-white-color;
+$sds-modal-mask-bg-color: rgba(0, 0, 0, .5);
+$sds-modal-header-title-color: $sds-secondary-text-color;
+$sds-modal-body-padding: 24px 48px;
+$sds-modal-header-padding: 14px 24px;
+$sds-modal-footer-btn-padding: 8px 20px;
+$sds-modal-info-msg-margin-left: 35px;
+$sds-modal-info-icon-size: 22px;
+$sds-modal-info-yes-width: 160px;
+$sds-modal-info-yes-height: 32px;
+$sds-modal-footer-padding: 20px 0;
+$sds-modal-title-font-size: $sds-font-size-base;
+$sds-modal-info-title-font-size: $sds-modal-title-font-size;
+$sds-modal-info-msg-font-size: $sds-font-size-base;
+$sds-modal-close-icon-size: 14px;
+
+// detail collapse
+$sds-detail-collapse-height: 110px;
+$sds-detail-collapse-padding: 4px 8px;
+$sds-detail-collapse-bg-color: $white-4;
+$sds-detail-collapse-border-color: $gray-8;
+
+//tag
+//font&border-color
+$sds-tag-info-background-color: $gray-8;
+$sds-tag-normal-text-color: $green-2;
+$sds-tag-error-text-color: $red-2;
+$sds-tag-warning-text-color: $sds-alarm-warning-color;
+$sds-tag-sub-health-text-color: $sds-alarm-important-color;
+$sds-tag-unknown-text-color: $gray-9;
+$sds-tag-primary-text-color: $sds-primary-color;
+$sds-tag-waiting-text-color: $purple-3;
+$sds-tag-maintained-text-color: $red-7;
+$sds-tag-third-part-text-color: $blue-14;
+$sds-tag-monitor-text-color: $blue-6;
+$sds-tag-manager-text-color: $green-1;
+$sds-tag-tgt-text-color: $blue-9;
+$sds-tag-nas-text-color: $purple-1;
+$sds-tag-object-text-color: $sds-secondary-text-color;
+$sds-tag-font-size: 14px !default;
+
+//background
+$sds-tag-normal-background-color: $green-6;
+$sds-tag-error-background-color: $red-8;
+$sds-tag-warning-background-color: $yellow-7;
+$sds-tag-sub-health-background-color: $yellow-6;
+$sds-tag-primary-background-color: $blue-15;
+$sds-tag-object-background-color: $sds-primary-color;
+
+//dropdown
+$sds-dropdown-cache: $red-9;
+$sds-dropdown-block: $blue-13;
+$sds-dropdown-network: $blue-12;
+$sds-dropdown-client: $black-7;
+
+// switch
+$sds-switch-on-color: $sds-primary-color;
+$sds-switch-off-color: $sds-disabled-color;
+
+// echarts
+$sds-line-legend-font-size: $sds-font-size-base;
+$sds-line-legend-color: $sds-secondary-text-color;
+$sds-line-legend-title-font-size: $sds-font-size-mid;
+$sds-line-legend-title-color: $sds-normal-color;
+$sds-line-legend-sub-title-font-size: $sds-font-size-small;
+$sds-line-legend-sub-title-color: $sds-light-text-color;
+
+// radio
+$sds-radio-font-color: $sds-secondary-text-color;
+$sds-radio-checked-color: $sds-primary-color;
+$sds-radio-checked-font-color: $sds-radio-font-color;
+$sds-radio-disabled-color: $sds-disabled-color;
+$sds-radio-disabled-input-fill: $sds-disabled-fill-color;
+$sds-radio-disabled-input-border-color: $sds-disabled-border-color-base;
+$sds-radio-disabled-font-color: $sds-disabled-text-color;
+
+// checkbox
+$sds-checkbox-font-color: $sds-secondary-text-color;
+$sds-checkbox-checked-font-color: $sds-checkbox-font-color;
+$sds-checkbox-checked-color: $sds-primary-color;
+$sds-checkbox-disabled-color: $sds-disabled-color;
+$sds-checkbox-disabled-input-fill: $sds-disabled-fill-color;
+$sds-checkbox-disabled-input-border-color: $sds-disabled-border-color-base;
+$sds-checkbox-disabled-checked-input-fill: $sds-checkbox-disabled-input-fill;
+$sds-checkbox-disabled-checked-input-border-color:$sds-checkbox-disabled-input-border-color;
+
+// input
+$sds-input-font-color: $sds-secondary-text-color;
+$sds-input-border: $sds-border-base;
+$sds-input-disabled-fill: $sds-disabled-fill-color;
+$sds-input-disabled-border: $sds-disabled-border-color-base;
+$sds-input-disabled-color: $sds-disabled-color;
+$sds-input-placeholder-color: $sds-disabled-color;
+$sds-input-hover-border-color: $sds-primary-color;
+$sds-input-focus-border-color: $sds-primary-color;
+$sds-input-focus-info-color: $sds-light-text-color;
+
+// select
+$sds-select-option-color: $sds-secondary-text-color;
+$sds-select-option-selected-color: $sds-primary-color;
+$sds-select-option-selected-bg-color: $blue-8;
+$sds-select-option-hover-bg-color: $sds-select-option-selected-bg-color;
+$sds-select-hover-border-color: $sds-primary-color;
+$sds-select-disabled-border-color: $sds-disabled-border-color-base;
+// icon
+$sds-icon-info-color: $black-7;
+$sds-button-group-active-bg-color:$black-5;
+
+// table
+$sds-table-row-negative-status-en: deleting, reducing, downing;
+$sds-table-row-primary-status-en: copying, editing;
+$sds-table-row-negative-status-zh: 正在删除, 正在减容, 正在降级;
+$sds-table-row-primary-status-zh: 正在复制, 正在编辑;
+$sds-table-thead-height: 40px;
+$sds-table-tr-height: 40px;
+$sds-table-thead-bg-color: $white-4;
+$sds-table-tbody-bg-color: $white-1;
+$sds-table-tbody-tr-hover-bg-color: $white-4;
+$sds-table-text-color: $black-5;
+
+$sds-table-column-popover-shadow-color: $black-0;
+$sds-table-column-popover-border-color: $gray-1;
+$sds-table-column-popover-disabled-color: $gray-2;
+$sds-table-column-popover-bg-color: $white-1;
+
+$sds-table-border-bottom-color: $gray-6;
+$sds-table-icon-color: $black-7;
+$sds-table-icon-primary-text-color: $white-1;
+$sds-table-hight-light-color: $blue-8;
+
+$sds-table-row-unhealthy-bg-color: $white-3;
+$sds-table-cell-unhealthy-text-color: $gray-2;
+$sds-table-cell-unhealthy-border-color: $gray-5;
+
+$sds-table-dot-tool-hover-text-color: $blue-1;
+$sds-table-cell-tool-split-line-color: $gray-8;
+
+$sds-table-row-wrapper-status-positive: $green-2;
+$sds-table-row-wrapper-status-primary: $blue-3;
+$sds-table-row-wrapper-status-negative: $red-2;
+$sds-table-scrollbar-color: $black-0;
+$sds-table-scrollbar-thumb-color: $black-6;
+$sds-table-scrollbar-track-color: $white-1;
+// pagination
+$sds-pagination-btn-text-color: $black-1;
+$sds-pagination-btn-bg-color: $white-1;
+$sds-pagination-btn-border-color: $gray-1;
+$sds-pagination-btn-hover-border-color: $white-1;
+$sds-pagination-btn-hover-text-color:$sds-primary-color;
+$sds-pagination-disabled-color: $gray-2;
+
+// tab
+$sds-top-tab-item-font-size: 16px;
+$sds-top-tab-header-height: 46px;
+$sds-top-tab-header-padding: 0 20px;
+$sds-top-tab-wrapper-line: $gray-4;
+$sds-top-tab-header-item-margin-right: 24px;
+$sds-top-tab-item-padding: 0 16px;
+$sds-top-tab-item-text-color: $sds-secondary-text-color;
+$sds-left-tab-item-padding: 24px;
+$sds-left-tab-item-active-color: $sds-primary-color;
+
+// process stripe
+$sds-process-stripe-linear-gradient-bg-color: $white-1;
+$sds-process-stripe-text-font-size: 16px;
+$sds-process-stripe-height: 16px;
+$sds-process-stripe-bg-position: 40px;

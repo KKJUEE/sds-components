@@ -1,0 +1,136 @@
+@import "../mixins/index";
+
+.sds-tag {
+  margin: 0 auto;
+
+  &__status {
+    font-size: $sds-tag-font-size;
+    &-text {
+      margin: 0 5px;
+    }
+  }
+  .scale-half{
+    transform:scale(.7)
+  }
+
+  &__label {
+    //tag-label特有属性
+    .normal {
+      background-color: $sds-tag-normal-background-color;
+    }
+
+    .warning {
+      background-color: $sds-tag-warning-background-color;
+    }
+
+    .error {
+      background-color: $sds-tag-error-background-color;
+    }
+
+    .sub-health {
+      background-color: $sds-tag-sub-health-background-color;
+    }
+
+    .primary {
+      background-color: $sds-tag-primary-background-color;
+    }
+
+    .object {
+      background-color: rgba($sds-tag-object-background-color, 0.1);
+    }
+  }
+
+  &__el-tag {
+    font-size: 12px;
+    height: 18px;
+    line-height: 18px;
+    background-color: transparent;
+  }
+
+  &__tooltip {
+    &-icon {
+      cursor: pointer;
+      color: $sds-lighter-color;
+      &{
+        :focus, &:hover, :active {
+          color: $sds-button-group-active-bg-color;
+        }
+      }
+    }
+  }
+
+  //status和tag—label公用属性
+  .info {
+    box-sizing: border-box;
+    height: 32px;
+    border: 1px solid $sds-secondary-border-color;
+    background-color: $sds-tag-info-background-color;
+    color: $sds-primary-text-color;
+    text-align: left;
+    line-height: 30px;
+    font-size: 14px;
+    & > .el-tag__close {
+      color: $sds-primary-text-color;
+      &:hover, &:active {
+        color: $sds-white-color;
+        background-color: $sds-light-color;
+      }
+    }
+  }
+
+  .normal, .health {
+    @include tag-text($sds-tag-normal-text-color);
+  }
+
+  .warning {
+    @include tag-text($sds-tag-warning-text-color);
+  }
+
+  .error, .abnormal {
+    @include tag-text($sds-tag-error-text-color);
+  }
+
+  .sub-health, .degrade {
+    @include tag-text($sds-tag-sub-health-text-color);
+  }
+
+  .unknown, .offline, .disconnected, .disable {
+    @include tag-text($sds-tag-unknown-text-color);
+  }
+
+  .primary, .storage, .connected {
+    @include tag-text($sds-tag-primary-text-color);
+  }
+
+  .waiting {
+    @include tag-text($sds-tag-waiting-text-color);
+  }
+
+  .maintained {
+    @include tag-text($sds-tag-maintained-text-color);
+  }
+
+  .third-part {
+    @include tag-text($sds-tag-third-part-text-color);
+  }
+
+  .monitor {
+    @include tag-text($sds-tag-monitor-text-color);
+  }
+
+  .manager {
+    @include tag-text($sds-tag-manager-text-color);
+  }
+
+  .tgt {
+    @include tag-text($sds-tag-tgt-text-color);
+  }
+
+  .nas {
+    @include tag-text($sds-tag-nas-text-color);
+  }
+
+  .object {
+    @include tag-text($sds-tag-object-text-color);
+  }
+}

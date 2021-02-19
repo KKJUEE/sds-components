@@ -1,0 +1,123 @@
+@import "../themes/index";
+@import "../mixins/index";
+.sds-breadcrumb-bar {
+  background-color: $sds-bg-white-color;
+  padding: 0 32px;
+  & > .el-breadcrumb {
+    line-height: 40px;
+  }
+}
+.el-breadcrumb {
+  color: $sds-light-text-color;
+  font-size: 14px;
+}
+.el-breadcrumb__item {
+  a {
+    color: inherit;
+    font-weight: inherit;
+  }
+  &:last-child > .el-breadcrumb__inner {
+    color: $sds-primary-text-color !important;
+  }
+}
+.sds-breadcrumb-select {
+  position: relative;
+  display: inline-flex;
+  width: 80px;
+  line-height: 1;
+  color: $sds-primary-text-color;
+  &:hover {
+    color: $sds-primary-color;
+  }
+  &.is-opened {
+    .sds-breadcrumb-select-arrow {
+      transform: rotate(180deg);
+    }
+  }
+  .el-select {
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    .el-input__inner {
+      height: inherit;
+      line-height: inherit;
+      user-select: none;
+    }
+  }
+}
+.sds-breadcrumb-select-popper {
+  width: 140px;
+  .el-scrollbar__wrap {
+    overflow: hidden;
+    margin: 0 !important;
+  }
+  .el-scrollbar__bar {
+    &.is-horizontal,&.is-vertical {
+      display: none;
+    }
+  }
+  .ps__rail-y, .ps__rail-x {
+    z-index: 1;
+  }
+}
+.sds-breadcrumb-select-scroll {
+  position: relative;
+  overflow: hidden;
+  max-height: 200px;
+}
+.sds-breadcrumb-select-title-wrapper {
+  display: inline-flex;
+  width: 100% ;
+}
+.sds-breadcrumb-select-title {
+  color: inherit;
+  flex: 0 0 auto;
+  max-width: calc(100% - 14px);
+  @include text-overflow
+}
+.sds-breadcrumb-select-arrow {
+  transition: all linear .3s;
+  margin-left: 6px;
+}
+.sds-active-breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  i {
+    color: $sds-lighter-text-color;
+    font-size: 14px;
+    margin-left: 5px;
+    cursor: pointer;
+    &:hover {
+      color: $sds-primary-text-color;
+    }
+  }
+}
+.sds-active-breadcrumb-item-text {
+  font-size: $sds-font-size-extra-large;
+  font-weight: $sds-font-weight-bold;
+  line-height: 24px;
+  color: $sds-primary-text-color;
+}
+.sds-breadcrumb-popper {
+  max-width: 740px;
+}
+.sds-breadcrumb-detail-search {
+  padding: 6px 0;
+  &.loading {
+    height: 92px;
+  }
+}
+.sds-breadcrumb-detail-search-input {
+  padding: 4px;
+  .el-input__inner {
+    line-height: 32px;
+    height: 32px;
+  }
+}
+.sds-breadcrumb-detail-search-empty {
+  text-align: center;
+  color: $sds-light-text-color;
+  margin: 10px 0;
+}

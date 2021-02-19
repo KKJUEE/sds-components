@@ -1,0 +1,90 @@
+@import "themes/index";
+
+
+html,
+body {
+  height: 100%
+}
+body {
+  background: $white-2;
+}
+.sds-primary-color {
+  color: $sds-primary-color;
+}
+.sds-primary-text-color {
+  color: $sds-primary-text-color;
+}
+.sds-secondary-text-color {
+  color: $sds-secondary-text-color;
+}
+.sds-light-text-color {
+  color: $sds-light-text-color;
+}
+.sds-lighter-text-color {
+  color: $sds-lighter-text-color;
+}
+.sds-alarm-critical {
+  color: $sds-alarm-critical-color;
+}
+.sds-lighter-color {
+  color: $sds-lighter-color;
+}
+.sds-alarm-important {
+  color: $sds-alarm-important-color;
+}
+.sds-alarm-warning {
+  color: $sds-alarm-warning-color;
+}
+.sds-alarm-info {
+  color: $sds-alarm-info-color;
+}
+.sds-success-color {
+  color: $sds-success-color;
+}
+.sds-warning-color {
+  color: $sds-warning-color;
+}
+.sds-danger-color {
+  color: $sds-danger-color;
+}
+.sds-info-color {
+  color: $sds-info-color;
+}
+.align-center {
+  text-align: center;
+}
+.language-zh {
+  .after-colon,
+  .el-form.sds-form-after-colon .el-form-item__label {
+    &::after {
+      content: "： ";
+    }
+  }
+}
+.language-en {
+  .after-colon,
+  .el-form.sds-form-after-colon .el-form-item__label {
+    &::after {
+      content: ": ";
+    }
+  }
+}
+
+.rect-box-fix {
+  position: fixed;
+  background: rgba($sds-aside-hover-bg-color, .5);
+  border: 1px dashed $sds-aside-hover-bg-color;
+}
+.dragging-shadow-box {
+  position: absolute;
+  left: -9999px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 50px;
+  background: $sds-secondary-color;
+  color: $sds-white-color;
+  font-weight: bold;
+  font-size: 18px;
+}

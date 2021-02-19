@@ -1,0 +1,51 @@
+.sds-action-bar {
+  margin-bottom: 10px;
+  .sds-button-group {
+  }
+
+  .sds-addtional-bar__body {
+    @media screen and (max-width: 1200px){
+      display: none;
+    }
+    @include flex(flex-end);
+    .el-input {
+      width: 60%;
+      margin-right: 5px;
+    }
+    .sds-addtional-bar__button--fresh {
+      margin-right: 5px;
+    }
+    .el-icon-search {
+      &:hover {
+        color: $sds-primary-color;
+      }
+    }
+    .sds-addtional-bar__btngroup {
+      margin-right: 5px;
+      .el-button {
+        padding: 8px 5px;
+        font-size: 14px;
+        color: $sds-button-group-active-bg-color;
+        border-color: $sds-button-group-active-bg-color;
+        border-radius: 4px;
+        box-sizing: border-box;
+        &:first-child {
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+        }
+        &:last-child {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+        &:hover{
+          color: $sds-primary-text-color;
+          text-decoration: underline;
+        }
+        &.isactive {
+          color: $sds-table-icon-primary-text-color;
+          background-color: $sds-button-group-active-bg-color;
+        }
+      }
+    }
+  }
+}

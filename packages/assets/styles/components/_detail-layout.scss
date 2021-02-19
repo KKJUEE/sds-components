@@ -1,0 +1,66 @@
+@import "../themes/index";
+@import "../mixins/position";
+.sds-detail {
+  position: relative;
+  background-color: $sds-bg-white-color;
+  & > .el-tabs {
+    margin-top: 12px;
+  }
+  .el-tabs__nav-wrap.is-top::after {
+    display: none;
+  }
+  .el-tabs__header.is-top {
+    margin: 0;
+    padding: 0 32px;
+  }
+  .el-tabs__content {
+    background-color: $sds-main-bg-color;
+    padding: 24px 24px 0 24px;
+  }
+  .el-tab-pane {
+    background-color: $sds-bg-white-color;
+  }
+}
+.sds-detail-params, .sds-detail-header {
+  padding: 0 32px
+}
+.sds-detail-header + .sds-detail-params {
+  margin-left: 40px;
+}
+.sds-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 40px;
+}
+.sds-detail-params {
+  line-height: 30px;
+}
+.sds-detail-title {
+  display: inline-flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: $sds-font-weight-bold;
+}
+.sds-detail-buttons {
+  display: inline-flex;
+  align-items: center;
+  .el-button {
+    padding: 8px 20px;
+  }
+}
+.sds-detail-info-img {
+  width: 28px;
+  margin-right: 12px;
+}
+.sds-detail-loading-failure {
+ @include ab-cover(10);
+  background-color: $sds-main-bg-color;
+}
+.sds-detail-loading-failure-content {
+  @include ab-middle(both);
+  text-align: center;
+}
+.sds-detail-loading-failure-text {
+  color: $sds-secondary-text-color;
+}

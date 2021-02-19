@@ -1,0 +1,189 @@
+@import "../mixins/index";
+
+.custom-tree-node {
+  & .tree-radio {
+    color: $sds-normal-color;
+    font-size: 14px;
+    font-weight: normal;
+
+    .el-radio__input.is-checked + .el-radio__label {
+      color: $sds-secondary-text-color;
+    }
+
+    &:before {
+      content: "";
+      left: 6px;
+      position: absolute;
+      right: auto;
+      border-width: 1px;
+      border-left: 1px dotted $sds-light-color !important;
+      bottom: 0px;
+      height: 100%;
+      top: 12px;
+      width: 1px;
+    }
+  }
+
+  &__label-text {
+    font-size: 14px;
+    color: $sds-secondary-text-color;
+  }
+  &__label-desc {
+    @include text-overflow;
+    display: inline-block;
+    max-width: 300px;
+    margin: 0 0 0 6px;
+    vertical-align: middle;
+    color: $sds-light-color;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  &__label-status {
+    font-size: 12px;
+    margin: 0 0 0 6px;
+  }
+}
+
+.sds-tree {
+  color: $sds-normal-color;
+
+  &__container {
+    position: relative;
+    overflow: hidden;
+    max-width: 540px;
+    min-width: 200px;
+    background-color: $sds-white-color;
+  }
+
+  &__custom-tree {
+    margin: 0 6px 0 0;
+
+    .el-tree-node__content {
+      &:hover {
+        background-color: #E6F7FF;
+      }
+    }
+
+    &.is-custom-icon {
+      .el-tree-node__expand-icon.expanded {
+        transform: rotate(90deg);
+      }
+    }
+
+    //仅仅扩展一层，支持node-network的形式
+    &>.el-tree-node {
+      position: relative;
+      .custom-tree-node {
+        span {
+          color: $sds-secondary-text-color;
+          &:hover {
+            color: $sds-normal-color
+          }
+        }
+      }
+
+
+      &:last-child:before {
+        border-left: none !important;
+      }
+      //去掉下拉展开图标最后的连线，必须选择为last-child(2),后续还有一个元素
+      &:nth-last-child(2):before {
+        border-left: none !important;
+      }
+
+      &:before {
+        content: "";
+        position: absolute;
+        right: auto;
+        border-width: 1px;
+        border-left: 1px dotted $sds-light-color;
+        bottom: 0px;
+        height: 75%;
+        top: 16px;
+        left: 12px;
+        width: 1px;
+        z-index: 1;
+      }
+
+      // 控制连线在展开时的高度
+      &.is-expanded:before {
+        height: 85%;
+        top: 22px;
+      }
+    }
+
+    & .el-tree-node__children {
+      padding-left: 16px; // 偏移量对其连线
+      // 取消最后一个radio向下的连线
+      & > :last-child {
+        & .el-radio:before{
+          border-left: none !important;
+        }
+      }
+
+      //el-tree-node__children下checkbox的before连线
+      & > .el-tree-node .el-tree-node__content .el-checkbox:before {
+        content: "";
+        left: 6px;
+        position: absolute;
+        right: auto;
+        border-width: 1px;
+        border-left: 1px dotted $sds-light-color;
+        bottom: 0px;
+        height: 100%;
+        top: 12px;
+        width: 1px;
+      }
+
+      // 取消checkbox展开项下的连线，因为连线太短造成误解
+      & > .el-tree-node.is-expanded {
+        & > .el-tree-node__content {
+          & > .el-checkbox:before {
+            border-left: none !important;
+          }
+        }
+
+      }
+
+      //checkbox下的last-child的before去掉
+      & > :last-child {
+        & .el-checkbox:before{
+          border-left: none !important;
+        }
+      }
+    }
+
+    // 取消tree下第一个tree-node的连线
+    & .el-tree > .el-tree-node:before {
+      border-left: none;
+    }
+
+    // 取消tree-node下最后一个node的连线
+    .el-tree-node :last-child:before {
+      border-left: none;
+    }
+
+  }
+
+
+  &__search {
+    padding: 8px 6px;
+    input {
+      height: 32px;
+    }
+  }
+
+  &__description {
+    padding: 0 10px;
+    max-width: 500px;
+    word-break: break-word;
+    color: $sds-light-color;
+    font-size: 12px;
+  }
+
+  &__icon {
+    width: 200px;
+  }
+
+}
+

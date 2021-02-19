@@ -1,0 +1,126 @@
+@import "../themes/index";
+.sds-echarts-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 100%;
+  padding: 0 32px;
+}
+.sds-echarts {
+  flex: 0 1 auto;
+  height: 100%;
+  min-height: 72px;
+}
+.sds-legend-right {
+  flex-direction: row-reverse;
+  .sds-line-legend-item {
+    text-align: right;
+  }
+  .sds-line-legend-item-switch {
+    flex-direction: row-reverse;
+    .el-switch {
+      flex-direction: row-reverse;
+      margin: 0;
+    }
+    .el-switch__label {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+    .sds-line-legend-item-switch-lastest-value {
+      margin-right: 20px;
+    }
+  }
+}
+.sds-legend-top,
+.sds-legend-bottom {
+  .sds-line-legend {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: calc(100% - 32px - 32px);
+  }
+  .sds-line-legend-item {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  .sds-line-legend-item-sub-title {
+    margin: 0 12px;
+  }
+  .sds-line-legend-item-switch {
+    margin: 0 12px;
+    .el-switch {
+      flex: 1 1 auto;
+    }
+  }
+}
+.sds-line-legend {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+.sds-line-legend-item {
+  position: absolute;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  line-height: 22px;
+  & > [class^="sds-line-legend-item"] {
+    flex: 0 1 auto;
+  }
+}
+.sds-line-legend-item-title {
+  font-size: $sds-line-legend-title-font-size;
+  color: $sds-line-legend-title-color;
+  font-weight: $sds-font-weight-mid;
+}
+.sds-line-legend-item-sub-title {
+  font-size: $sds-line-legend-sub-title-font-size;
+  color: $sds-line-legend-sub-title-color;
+  margin-bottom: 8px;
+}
+.sds-line-legend-item-switch {
+  display: inline-flex;
+  align-items: center;
+  line-height: 26px;
+  .el-switch {
+    flex: 1 1 20%;
+    margin-right: 8px;
+    &.is-checked {
+      .el-switch__core::after {
+        margin-left: -8px;
+      }
+    }
+  }
+  .el-switch__core {
+    width: 16px !important;
+    height: 10px;
+    border-radius: 4px;
+    &::after {
+      top: 0;
+      left: 0;
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      transition: all linear .5s;
+    }
+  }
+  .el-switch__label {
+    font-weight: normal;
+    color: $sds-disabled-color;
+    &.is-active {
+      color: $sds-secondary-text-color;
+    }
+  }
+}
+.sds-line-legend-item-switch-lastest-value {
+  flex: 1 1 auto;
+  font-size: $sds-line-legend-font-size;
+  color: $sds-secondary-text-color;
+  &.is-disabled {
+    color: $sds-disabled-color;
+  }
+}

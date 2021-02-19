@@ -1,0 +1,31 @@
+@import "../themes/index";
+@import "../mixins/index";
+.sds-input {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
+  & > .el-input {
+    // fixed edge spacing
+    -ms-flex: 0 0 auto;
+  }
+}
+.sds-input-focus-info-show + .el-form-item__error {
+  display: none;
+}
+.el-form-item.is-error {
+  .sds-input-focus-info-show {
+    .el-input__inner {
+      border-color: $sds-input-focus-border-color;
+    }
+  }
+}
+.sds-input-focus-info {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  color: $sds-input-focus-info-color;
+  line-height: 20px;
+  @include text-break;
+}

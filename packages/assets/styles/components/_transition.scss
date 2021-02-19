@@ -1,0 +1,18 @@
+.right-scale-enter {
+  transform: scaleX(0);
+}
+.right-scale-enter-to {
+  white-space: nowrap;
+  transition: transform linear .3s;
+  transform: scaleX(1);
+  //从右向左
+  transform-origin: 100% 0;
+}
+.right-scale-leave-active {
+  white-space: nowrap;
+  transition-property: transform;
+  transition-duration: .3s;
+  transition-timing-function: linear;
+  transform: scaleX(0);
+  transform-origin: 100% 0;
+}

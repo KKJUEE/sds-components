@@ -1,0 +1,31 @@
+@import "../themes/index";
+.sds-detail-collapse {
+  &.is-show {
+    .sds-detail-collapse-arrow {
+      transform: rotate(180deg);
+    }
+  }
+}
+.sds-detail-collapse-content {
+  color: $sds-secondary-text-color;
+  background-color: $sds-detail-collapse-bg-color;
+  line-height: 22px;
+  padding: $sds-detail-collapse-padding;
+  padding-left: 0;
+  padding-right: 0;
+  // 在ie下使用border时折叠动画会出现停滞效果，故用outline代理border
+  outline: 1px solid $sds-detail-collapse-border-color;
+}
+.sds-detail-collapse-scroll {
+  position: relative;
+  overflow: hidden;
+  max-height: $sds-detail-collapse-height;
+  padding: $sds-detail-collapse-padding;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.sds-detail-collapse-title {
+  color: $sds-primary-color;
+  transition: all linear .3s;
+  cursor: pointer;
+}

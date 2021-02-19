@@ -1,0 +1,74 @@
+@mixin ab-middle ($axis: both) {
+  position: absolute;
+  @if($axis == both) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if($axis == x) {
+    left: 50%;
+    transform: translateX(-50%);
+  } @else if($axis == y) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@mixin ab-cover($zIndex: 1) {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: $zIndex;
+}
+
+@mixin text-hidden ($width: 100%){
+  min-width: 16px;
+  width: $width;
+  overflow: hidden;
+  white-space: nowrap;
+  word-wrap: normal;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+@mixin tag-text ($color: $sds-primary-color) {
+  color: $color;
+  border-color: rgba($color, 0.4);
+  & > .el-tag__close {
+    color: $color;
+    &:hover, &:active {
+      color: $sds-white-color;
+      background-color: $color;
+    }
+  }
+}
+
+@mixin tag-background ($color: $sds-primary-color) {
+  background-color: $color;
+}
+
+@mixin progress-style ($color: $sds-primary-color) {
+  background: $color;
+  &.el-button {
+    background: $color;
+    color: $sds-white-color;
+    border: 0;
+    &:hover, &:active, &:focus {
+      color: $sds-white-color;
+      background: $color;
+      border-color: $color;
+    }
+    &.is-disabled, &.is-disabled:hover {
+      color: $color;
+    }
+  }
+}
+
+@mixin progress-disabled ($color: $sds-primary-color) {
+  &.el-button {
+    &.is-disabled, &.is-disabled:hover {
+      background: $color;
+    }
+  }
+}

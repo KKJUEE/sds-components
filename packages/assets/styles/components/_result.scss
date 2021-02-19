@@ -1,0 +1,60 @@
+.sds-result {
+  position: relative;
+  padding:48px 0 80px;
+  font-size: 14px;
+
+  .operate-status-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    position: relative;
+    margin: 0 auto;
+    color: $sds-secondary-background-color;
+    font-size: 28px;
+    span {
+      top: 50%;
+      left: 50%;
+      position: absolute;
+      transform: translate(-50%,-50%);
+    }
+  }
+
+  .operate-status-icon-success {
+    background: $sds-success-color;
+  }
+
+  .warn-color {
+    background: $sds-warning-color;
+  }
+
+  .operate-status-title {
+    position: relative;
+    font-size: 24px;
+    font-weight: bold;
+    color: $sds-normal-color;
+    text-align: center;
+    margin: 24px 0 16px;
+  }
+
+  .operate-status-subTitle {
+    position: relative;
+    color: $sds-light-color;
+    text-align: center;
+    margin: 0 0 24px;
+    font-size: 14px;
+  }
+
+  .operate-success__body {
+    position: relative;
+    margin: 24px 0 0;
+    overflow: hidden;
+  }
+
+  .operate-success-info {
+    width: 560px;
+    background: $sds-third-background-color;
+    margin: 0 auto;
+    padding: 24px 0;
+    overflow: hidden;
+  }
+}

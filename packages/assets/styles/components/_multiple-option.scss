@@ -1,0 +1,31 @@
+.sds-multiple-option{
+  &.selected::after {
+    content: '' !important;
+  }
+
+  &__cover {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom :0;
+    top: 0;
+  }
+  .el-checkbox {
+    margin-right: 8px;
+  }
+}
+
+// 隐藏多选条件下选中时，select中的tag
+.el-select__tags {
+  .select__text {
+    display: inline-block !important;
+    padding-left: 10px;
+  }
+  .el-select__input {
+    margin-left: 5px;
+  }
+  .el-tag {
+    display: none !important;
+  }
+}

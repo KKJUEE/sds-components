@@ -1,0 +1,11 @@
+@import "../themes/index";
+.sds-clipboard-copy {
+  margin-left: 15px;
+  cursor: pointer;
+  &:hover {
+    color: $sds-primary-color;
+  }
+  .fa-check {
+    color: $sds-success-color;
+  }
+}

@@ -1,0 +1,9 @@
+.sds-select {
+  &__dropdown {
+    height: 100%;
+    padding: 0;
+    &.selected {
+      font-weight: normal;
+    }
+  }
+}
